@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio 1: Identificar Patrones de Sobrepensamiento</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 95%;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 50px 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="brain-waves" patternUnits="userSpaceOnUse" width="40" height="40"><path d="M0,20 Q10,10 20,20 Q30,30 40,20" stroke="rgba(255,255,255,0.1)" stroke-width="1" fill="none"/></pattern></defs><rect width="100" height="100" fill="url(%23brain-waves)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 25px;
+        }
+
+        .audio-controls {
+            margin-top: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .content {
+            padding: 60px 80px;
+        }
+
+        .intro-section {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .brain-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .brain-center {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: white;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            animation: pulse-brain 2s ease-in-out infinite;
+            position: relative;
+        }
+
+        .thought-bubble {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 107, 107, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            animation: float 3s ease-in-out infinite;
+            color: white;
+        }
+
+        .bubble-1 { top: -30px; left: -40px; animation-delay: 0s; }
+        .bubble-2 { top: -40px; right: -30px; animation-delay: 1s; }
+        .bubble-3 { bottom: -30px; left: -30px; animation-delay: 2s; }
+        .bubble-4 { bottom: -40px; right: -40px; animation-delay: 1.5s; }
+
+        @keyframes pulse-brain {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(0.9); opacity: 0.7; }
+            50% { transform: translateY(-15px) scale(1.1); opacity: 1; }
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 35px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border-left: 6px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .problema { border-left-color: #ff6b6b; }
+        .identificacion { border-left-color: #4ecdc4; }
+        .interpretacion { border-left-color: #45b7d1; }
+        .solucion { border-left-color: #96ceb4; }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .section-content {
+            color: #555;
+            line-height: 1.9;
+            font-size: 1.2em;
+        }
+
+        .quiz-section {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+        }
+
+        .quiz-title {
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .quiz-question {
+            background: rgba(255,255,255,0.8);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .quiz-option {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+        }
+
+        .quiz-option:hover {
+            border-color: #667eea;
+            transform: translateX(8px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .quiz-option.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .pattern-result {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+            text-align: center;
+            display: none;
+        }
+
+        .pattern-title {
+            font-size: 1.6em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #feca57 0%, #ff9ff3 100%);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .action-box {
+            background: linear-gradient(135deg, #96ceb4 0%, #ffeaa7 100%);
+            border-radius: 20px;
+            padding: 35px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .action-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #2d3436;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px 0;
+        }
+
+        .progress-step {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 0 15px;
+            position: relative;
+        }
+
+        .progress-step.active {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+        }
+
+        .progress-step.completed {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+        }
+
+        .progress-line {
+            height: 4px;
+            width: 80px;
+            background: #ddd;
+            margin: 0 5px;
+        }
+
+        .progress-line.completed {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                width: 98%;
+            }
+            
+            .content {
+                padding: 40px 50px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .header p {
+                font-size: 1.1em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .brain-center {
+                width: 120px;
+                height: 120px;
+                font-size: 3em;
+            }
+            
+            .thought-bubble {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5em;
+            }
+            
+            .progress-step {
+                width: 40px;
+                height: 40px;
+                margin: 0 8px;
+                font-size: 1em;
+            }
+            
+            .progress-line {
+                width: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 15px 25px;
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 1.4em;
+            }
+            
+            .section-content {
+                font-size: 1.1em;
+            }
+            
+            .progress-step {
+                width: 35px;
+                height: 35px;
+                margin: 0 5px;
+                font-size: 0.9em;
+            }
+            
+            .progress-line {
+                width: 25px;
+            }
+        }
+   /* --- Ajustes móviles y tipografía fluida --- */
+html {
+  /* Evita que iOS reescale el texto */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  /* Tamaño base fluido para todo el sitio */
+  font-size: clamp(0.95rem, 2.6vw, 1.05rem);
+  line-height: 1.6;
+}
+
+/* Títulos fluidos */
+.header h1 {
+  font-size: clamp(1.4rem, 5.5vw, 2.2rem);
+  line-height: 1.2;
+}
+.section-title,
+.intro-section h2 {
+  font-size: clamp(1.1rem, 4.2vw, 1.6rem);
+  line-height: 1.3;
+}
+
+/* Párrafos y textos largos */
+.header p,
+.section-content,
+.intro-section p {
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+  line-height: 1.7;
+  overflow-wrap: anywhere; /* Evita desbordes por palabras largas */
+}
+
+/* Contenedores más “respirables” en móvil */
+.container { width: min(95%, 1200px); }
+.content { padding: clamp(1rem, 3.5vw, 2.5rem); }
+.header  { padding: clamp(1.2rem, 4vw, 3rem) clamp(1rem, 3.5vw, 2rem); }
+
+/* Imagen de portada y audio 100% ancho disponible */
+.header img,
+.content img,
+audio {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Botones cómodos en móvil */
+.btn {
+  font-size: clamp(0.95rem, 3.2vw, 1rem);
+  padding: clamp(0.6rem, 2.5vw, 1rem) clamp(0.9rem, 3vw, 2rem);
+}
+
+/* Ajustes extra para pantallas muy pequeñas */
+@media (max-width: 420px) {
+  .header p[style] { font-size: inherit !important; } /* neutraliza inline grandes */
+  .intro-section { padding: 1rem; }
+  .stats-grid, .section-card { padding: 1rem; }
+}
+
+/* Opcional: si los emojis agrandan el renglón, limítalo un poquito */
+h1, h2 { white-space: normal; }
+ /* --- Ancho real en móvil (parche anti-estrecho) --- */
+@media (max-width: 600px) {
+  /* usa todo el ancho de la pantalla */
+  .container { max-width: 100vw; width: 100%; margin: 0; border-radius: 0; }
+
+  /* menos margen lateral */
+  .header { padding: 1.25rem 1rem; }
+  .content { padding: 1rem; }
+
+  /* las tarjetas a ancho completo */
+  .intro-section,
+  .section-card,
+  .stats-grid { margin: 0; padding: 1rem; width: 100%; max-width: none; }
+
+  /* evita anchos fijos heredados */
+  .stats-grid,
+  .quiz-section,
+  .quiz-question,
+  .quiz-options,
+  .quiz-option,
+  .stat-card { width: 100% !important; max-width: none !important; }
+
+  /* imágenes y audio sin recorte */
+  img, audio { max-width: 100%; height: auto; display: block; }
+
+  /* gutters laterales mínimos */
+  .intro-section, .section-card { margin-inline: 0; }
+}
+
+/* si algún bloque tenía un ancho duro en desktop, desactívalo en móvil extremo */
+@media (max-width: 420px) {
+  [style*="width:"], [class*="width"], [class*="max-width"] { max-width: 100% !important; }
+}
+/* ===== Quiz: tipografía y layout fluidos ===== */
+
+/* Desktop/tablet: un poco más compacto ya */
+.quiz-section .quiz-option {
+  /* por qué: evitar que el texto “inflé” el botón */
+  font-size: clamp(0.98rem, 1.6vw, 1.05rem);
+  line-height: 1.55;
+  padding: clamp(0.9rem, 1.6vw, 1.15rem) clamp(1rem, 2vw, 1.4rem);
+}
+
+/* Título de bloque del quiz */
+.quiz-section .quiz-title {
+  font-size: clamp(1.05rem, 2.6vw, 1.25rem);
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+}
+
+/* Contenedor: sin anchos fijos */
+.quiz-section,
+.quiz-question,
+.quiz-options {
+  width: 100%;
+  max-width: none;
+}
+
+/* Separación uniforme entre opciones */
+.quiz-options {
+  display: grid;
+  gap: 12px;
+}
+
+/* MÓVIL: reducir más para que “respire” y no se vea estrecho */
+@media (max-width: 600px) {
+  .quiz-section .quiz-option {
+    font-size: clamp(0.94rem, 3.5vw, 1rem);
+    line-height: 1.5;
+    padding: clamp(0.75rem, 3.2vw, 0.95rem) clamp(0.9rem, 4vw, 1.1rem);
+    border-radius: 12px;           /* menos curva = más espacio útil */
+    margin: 0;                     /* sin márgenes laterales */
+  }
+
+  .quiz-section .quiz-title {
+    font-size: clamp(1rem, 3.8vw, 1.15rem);
+    margin-bottom: 0.6rem;
+  }
+
+  /* Asegura ancho completo y elimina “estrechez” por bordes/paddings altos */
+  .section-card.identificacion,
+  .quiz-section {
+    padding: 1rem;
+    margin-inline: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* MÓVIL PEQUEÑO extra */
+@media (max-width: 390px) {
+  .quiz-section .quiz-option {
+    font-size: 0.92rem;
+    padding: 0.7rem 0.9rem;
+  }
+}
+
+.final-message {
+  margin: 2rem auto;
+  padding: 1.2rem 1.8rem;
+  text-align: center;
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #d4b5f9, #9acdfd); /* pastel suave */
+  border-radius: 40px;
+  max-width: 600px;      /* 🔹 límite de ancho */
+  width: 90%;            /* 🔹 nunca ocupa toda la pantalla */
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 18px rgba(190,170,255,0.4),
+              0 0 28px rgba(150,200,255,0.3); /* glow fijo */
+}
+
+/* ✨ Halo que se mueve */
+.final-message::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 120%;          /* 🔹 halo no tan ancho */
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.6),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: shine 4s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0%   { left: -120%; }
+  50%  { left: 120%; }
+  100% { left: 120%; }
+}
+
+
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Día 1: Identifica tu Patrón</h1>
+            <p>Cómo identificar QUÉ está alimentando tu sobrepensamiento</p>
+           
+            <!-- Portada del audio -->
+<img src="1diaportada.JPG" alt="Portada Día 1" 
+     style="max-width:250px; border-radius:12px; margin:1rem auto; display:block;">
+
+<!-- Reproductor de audio -->
+<audio controls preload="metadata" 
+       style="width:100%; max-width:500px; margin:1rem auto; display:block;">
+  <source src="1diaaudio.MP3" type="audio/mpeg">
+  Tu navegador no soporta la reproducción de audio.
+</audio>
+
+        </div>
+
+        <div class="content">
+            <div class="intro-section">
+                <h2>🎯 Bienvenido al Detox Dopamínico Neurológico</h2>
+                <div class="brain-visual">
+                    <div class="brain-center">
+                        🧠
+                        <div class="thought-bubble bubble-1">💭</div>
+                        <div class="thought-bubble bubble-2">⚡</div>
+                        <div class="thought-bubble bubble-3">🔄</div>
+                        <div class="thought-bubble bubble-4">❓</div>
+                    </div>
+                </div>
+                <p style="font-size: 1.2em;"><strong>Hola, soy Dra. Laura Landa, y si estás aquí es porque tu mente no para.</strong> Pensamientos que dan vueltas, la misma preocupación una y otra vez, esa sensación de que tu cabeza está llena de ruido constante.</p>
+                <br>
+                <p style="font-size: 1.2em;"><span class="highlight">Quiero que sepas algo importante: no es tu culpa, y definitivamente no es falta de fuerza de voluntad.</span></p>
+                <br>
+                <p style="font-size: 1.2em;">Durante mis años de práctica clínica he trabajado con cientos de personas que luchan exactamente con lo mismo que tú estás experimentando. Y he descubierto algo fascinante: <strong>el sobrepensamiento no es una falla de carácter, es una respuesta neurológica predecible a la sobreestimulación moderna.</strong></p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">200%</div>
+                    <div>Más estímulos dopamínicos que hace 20 años</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">90</div>
+                    <div>Segundos para cortar pensamientos repetitivos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div>Días para completar el detox neurológico</div>
+                </div>
+            </div>
+
+            <div class="section-card problema">
+                <div class="section-title">🔍 El Problema Real: Sobrecarga Dopamínica Neurológica</div>
+                <div class="section-content">
+                    <p>Tu cerebro está recibiendo <strong>200% más estímulos dopamínicos</strong> que hace solo 20 años. Notificaciones constantes, noticias las 24 horas, redes sociales, decisiones infinitas, información sin parar desde el momento que despiertas hasta que intentas dormir.</p>
+                    <br>
+                    <p><strong>Imagina tu sistema nervioso como el procesador de una computadora.</strong> Si abres demasiados programas al mismo tiempo, si tienes 50 pestañas del navegador funcionando simultáneamente, ¿qué sucede? Se satura, se vuelve lento, empieza a trabarse, y eventualmente puede colapsar.</p>
+                    <br>
+                    <p>Eso es exactamente lo que le está pasando a tu mente con el sobrepensamiento. No es que tengas "más cosas importantes en las que pensar" que otras personas. <span class="highlight">Es que tu sistema dopamínico está completamente sobrecargado procesando información innecesaria</span>, y eso crea lo que yo llamo <strong>"ruido neurológico constante"</strong>.</p>
+                    <br>
+                    <p>🎯 <strong>Y aquí viene lo importante, lo que cambia todo:</strong> Hay patrones específicos y predecibles que alimentan este ruido mental. Y una vez que identificas TU patrón personal, puedes cortarlo de raíz.</p>
+                </div>
+            </div>
+
+            <div class="section-card identificacion">
+                <div class="section-title">📊 Identifica Tu Patrón Personal de Sobrepensamiento</div>
+                <div class="section-content">
+                    <p>Vamos a identificar tu patrón ahora mismo. Son solo 3 preguntas simples, pero quiero que respondas con <strong>honestidad brutal</strong>. No lo que crees que debería ser la respuesta, sino lo que realmente experimentas.</p>
+                    
+                    <div class="quiz-section">
+                        <div class="quiz-title">PREGUNTA 1: ¿CUÁNDO se intensifica más tu sobrepensamiento?</div>
+                        <div class="quiz-question">
+                            <p style="margin-bottom: 20px;">Escucha estas tres opciones cuidadosamente y clica en pantalla la que más resuena contigo:</p>
+                            <div class="quiz-options" id="question1">
+                                <div class="quiz-option" data-value="input" data-question="1">
+                                    <strong>PRIMERA OPCIÓN:</strong> Al final del día, cuando por fin paras todas tus actividades y tu mente literalmente explota con todo lo pendiente, con todo lo que no resolviste, con todas las preocupaciones acumuladas.
+                                </div>
+                                <div class="quiz-option" data-value="decision" data-question="1">
+                                    <strong>SEGUNDA OPCIÓN:</strong> En momentos específicos de decisión, cuando tienes que elegir algo y tu mente no para de analizar opciones, de evaluar pros y contras, de dar vueltas y vueltas sin llegar nunca a una conclusión definitiva.
+                                </div>
+                                <div class="quiz-option" data-value="social" data-question="1">
+                                    <strong>TERCERA OPCIÓN:</strong> Cuando estás solo, sin distracciones externas, sin televisión, sin música, sin gente alrededor, y automáticamente empiezas a dar vueltas a los mismos pensamientos una y otra vez.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-section">
+                        <div class="quiz-title">PREGUNTA 2: ¿QUÉ tipo específico de pensamientos dominan tu sobrepensamiento?</div>
+                        <div class="quiz-question">
+                            <div class="quiz-options" id="question2">
+                                <div class="quiz-option" data-value="input" data-question="2">
+                                    <strong>PRIMERA OPCIÓN:</strong> Preocupaciones sobre el futuro. Pensamientos como "¿Qué va a pasar si esto sale mal?" "¿Y si no soy suficientemente bueno?" Tu mente constantemente anticipando problemas que ni siquiera han sucedido.
+                                </div>
+                                <div class="quiz-option" data-value="decision" data-question="2">
+                                    <strong>SEGUNDA OPCIÓN:</strong> Análisis obsesivo del pasado. "¿Por qué dije eso?" "Debería haber hecho esto diferente." Tu mente reviviendo conversaciones, situaciones, decisiones que ya no puedes cambiar.
+                                </div>
+                                <div class="quiz-option" data-value="social" data-question="2">
+                                    <strong>TERCERA OPCIÓN:</strong> Decisiones pendientes que no puedes resolver. "¿Debería hacer esto o aquello?" "No sé qué elegir." Tu mente atascada analizando las mismas opciones sin poder avanzar.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-section">
+                        <div class="quiz-title">PREGUNTA 3: ¿QUÉ actividades específicas hacen que tu mente se sienta MÁS acelerada?</div>
+                        <div class="quiz-question">
+                            <div class="quiz-options" id="question3">
+                                <div class="quiz-option" data-value="input" data-question="3">
+                                    <strong>PRIMERA OPCIÓN:</strong> Consumir información de manera constante: revisar noticias, navegar en redes sociales, ver videos de YouTube, escuchar podcasts, leer artículos. Entre más información consumes, más acelerada se siente tu mente.
+                                </div>
+                                <div class="quiz-option" data-value="decision" data-question="3">
+                                    <strong>SEGUNDA OPCIÓN:</strong> Hacer múltiples tareas al mismo tiempo: trabajar mientras respondes mensajes, ver televisión mientras navegas en el teléfono, cambiar de una actividad a otra constantemente sin terminar nada completamente.
+                                </div>
+                                <div class="quiz-option" data-value="social" data-question="3">
+                                    <strong>TERCERA OPCIÓN:</strong> Interacciones sociales intensas: conversaciones importantes, reuniones de trabajo, situaciones donde tienes que "estar presente" y después tu mente no puede parar de procesar todo lo que pasó.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="calculatePattern" class="btn btn-primary" style="margin-top: 30px; display: none; width: 100%;">
+                        🎯 Ver Mi Patrón de Sobrepensamiento
+                    </button>
+                </div>
+            </div>
+
+            <div id="inputPattern" class="pattern-result">
+                <div class="pattern-title">🔴 Tu Patrón: "Sobrecarga de Input"</div>
+                <p><strong>Tu cerebro está procesando demasiada información externa constantemente y no tiene tiempo de "digerir" nada completamente.</strong></p>
+                <br>
+                <p>Es como tener un restaurante donde siguen entrando clientes pero nunca terminan de servir los platos anteriores. Tu sistema neurológico está constantemente recibiendo nuevos estímulos sin procesar completamente los previos.</p>
+                <br>
+                <p><strong>Síntomas típicos:</strong> Mente acelerada al final del día, dificultad para "desconectar", sensación de estar siempre "encendido", agotamiento mental sin haber hecho nada "productivo".</p>
+            </div>
+
+            <div id="decisionPattern" class="pattern-result">
+                <div class="pattern-title">🟡 Tu Patrón: "Bucle de Indecisión"</div>
+                <p><strong>Tu mente se atasca analizando opciones sin llegar nunca a conclusiones definitivas.</strong></p>
+                <br>
+                <p>Es como estar usando un GPS que recalcula la ruta constantemente pero nunca te dice por dónde ir. Tu corteza prefrontal está completamente agotada de evaluar pros y contras sin tomar decisiones reales.</p>
+                <br>
+                <p><strong>Síntomas típicos:</strong> Análisis paralítico, rumiación obsesiva sobre el pasado, dificultad para tomar decisiones simples, sensación de estar "atascado" mentalmente.</p>
+            </div>
+
+            <div id="socialPattern" class="pattern-result">
+                <div class="pattern-title">🔵 Tu Patrón: "Hiperactivación Social"</div>
+                <p><strong>Tu sistema nervioso se activa demasiado intensamente durante las interacciones y después no sabe cómo calmarse.</strong></p>
+                <br>
+                <p>Es como un auto deportivo que acelera muy fácilmente pero tiene frenos deficientes. Tu cerebro se "enciende" rápidamente en situaciones sociales pero le cuesta muchísimo "apagarse" después.</p>
+                <br>
+                <p><strong>Síntomas típicos:</strong> Mente hiperactiva después de interacciones, necesidad de estar solo para procesar, agotamiento social, replay mental de conversaciones.</p>
+            </div>
+
+            <div id="mixedPattern" class="pattern-result">
+                <div class="pattern-title">🟢 Tu Patrón: "Sobrecarga Multifactorial"</div>
+                <p><strong>Tu sobrecarga viene de múltiples fuentes simultáneas.</strong></p>
+                <br>
+                <p>Esto es súper común en personas inteligentes que manejan muchas responsabilidades simultáneamente. Tu cerebro está siendo atacado desde varios frentes a la vez.</p>
+                <br>
+                <p><strong>La ventaja:</strong> Una vez que identifiques las fuentes principales, el alivio será más notable y rápido porque abordarás múltiples causas al mismo tiempo.</p>
+            </div>
+
+            <div class="section-card solucion">
+                <div class="section-title">⚡ La Solución Neurológica Específica</div>
+                <div class="section-content">
+                    <p><strong>Aquí está la buena noticia, la que cambia todo:</strong> Una vez que conoces tu patrón específico, la solución es específica y sorprendentemente rápida.</p>
+                    <br>
+                    <p><span class="highlight">No necesitas meditar 30 minutos diarios durante meses. No necesitas hacer terapia durante años.</span> Necesitas hacer un <strong>detox neurológico dirigido</strong> que corte exactamente las fuentes que están sobrecargando TU sistema específico.</p>
+                    <br>
+                    <p>Y eso es exactamente lo que vamos a hacer juntos en los próximos 4 días.</p>
+                    <br>
+                    <div style="background: linear-gradient(135deg, #e8f4fd 0%, #f0f4ff 100%); padding: 25px; border-radius: 15px; border: 3px solid #4dabf7;">
+                        <p style="color: #1971c2; font-weight: bold; margin-bottom: 15px; font-size: 1.2em;">🔬 Base Científica:</p>
+                        <p style="color: #666; font-size: 1.1em;">Este programa está basado en neuroplasticidad dirigida, regulación dopamínica y técnicas de interrupción de circuitos neuronales validadas en práctica clínica.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-indicator">
+                <div class="progress-step active">1</div>
+                <div class="progress-line"></div>
+                <div class="progress-step">2</div>
+                <div class="progress-line"></div>
+                <div class="progress-step">3</div>
+                <div class="progress-line"></div>
+                <div class="progress-step">4</div>
+                <div class="progress-line"></div>
+                <div class="progress-step">5</div>
+            </div>
+
+            <div class="action-box">
+                <div class="action-title">🎯 Tu Misión Específica para Hoy</div>
+                <p style="font-size: 1.2em;"><strong>Cada vez que durante el día de hoy notes tu mente acelerada, simplemente di mentalmente "Ahí está mi patrón".</strong></p>
+                <br>
+                <p style="font-size: 1.1em;">No trates de pararlo todavía. No te juzgues. Solo reconócelo con <strong>curiosidad científica</strong>.</p>
+                <br>
+                <p style="font-size: 1.1em;"><span class="highlight">La conciencia es el primer paso del detox neurológico.</span></p>
+                <br>
+                <div style="background: rgba(255,255,255,0.9); padding: 20px; border-radius: 12px; margin: 20px 0;">
+                    <p style="color: #2d3436; font-weight: bold; font-size: 1.2em;">📝 Observa específicamente:</p>
+                    <ul style="color: #636e72; margin-left: 20px; margin-top: 10px; list-style: none; font-size: 1.1em;">
+                        <li style="margin: 8px 0;">• ¿A qué hora del día se intensifica más?</li>
+                        <li style="margin: 8px 0;">• ¿Qué actividad estabas haciendo justo antes?</li>
+                        <li style="margin: 8px 0;">• ¿Cómo se siente físicamente en tu cuerpo?</li>
+                    </ul>
+                </div>
+                <br>
+                <p style="font-size: 1.2em;"><strong>Mañana, en el Audio 2, vas a aprender la técnica neurológica exacta para cortar tus pensamientos repetitivos en exactamente 90 segundos.</strong> No estoy exagerando. 90 segundos para cortar un bucle mental que puede haber estado funcionando durante horas.</p>
+           <br>
+         <div class="final-message decorated">
+  Tu MENTE es poderosa y TÚ tienes el CONTROL
+</div>
+
+        </div>
+    </div>
+
+    <script>
+        let speech = null;
+        let isPaused = false;
+        let answers = { q1: null, q2: null, q3: null };
+
+        // Manejar selección de opciones
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const question = this.dataset.question;
+                const value = this.dataset.value;
+                
+                // Remover selección previa en esta pregunta
+                document.querySelectorAll(`#question${question} .quiz-option`).forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Agregar selección actual
+                this.classList.add('selected');
+                
+                // Guardar respuesta
+                answers[`q${question}`] = value;
+                
+                // Mostrar botón si todas las preguntas están respondidas
+                if (answers.q1 && answers.q2 && answers.q3) {
+                    document.getElementById('calculatePattern').style.display = 'block';
+                }
+            });
+        });
+
+        // Calcular patrón
+        document.getElementById('calculatePattern').addEventListener('click', function() {
+            // Contar respuestas
+            const counts = { input: 0, decision: 0, social: 0 };
+            Object.values(answers).forEach(value => {
+                if (value) counts[value]++;
+            });
+            
+            // Ocultar todos los resultados
+            document.querySelectorAll('.pattern-result').forEach(result => {
+                result.style.display = 'none';
+            });
+            
+            // Determinar patrón dominante
+            const maxCount = Math.max(...Object.values(counts));
+            const dominantPatterns = Object.keys(counts).filter(key => counts[key] === maxCount);
+            
+            // Mostrar resultado
+            if (dominantPatterns.length > 1) {
+                document.getElementById('mixedPattern').style.display = 'block';
+            } else {
+                const pattern = dominantPatterns[0];
+                if (pattern === 'input') {
+                    document.getElementById('inputPattern').style.display = 'block';
+                } else if (pattern === 'decision') {
+                    document.getElementById('decisionPattern').style.display = 'block';
+                } else if (pattern === 'social') {
+                    document.getElementById('socialPattern').style.display = 'block';
+                }
+            }
+            
+            // Scroll al resultado
+            document.querySelector('.pattern-result[style*="block"]').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+        });
+
+        function getTextContent() {
+            const content = document.querySelector('.content');
+            let text = content.innerText;
+            
+            // Limpiar emojis y símbolos para mejor lectura
+            text = text.replace(/🧠|🎯|🔍|📊|⚡|🔴|🟡|🔵|🟢|💭|⚡|🔄|❓|🎧|⏸️/g, '');
+            text = text.replace(/•/g, '');
+            text = text.replace(/\n+/g, '. ');
+            text = text.replace(/PREGUNTA \d+:/g, 'Pregunta:');
+            
+            return text;
+        }
+
+        // Audio controls
+        document.getElementById('playButton').addEventListener('click', function() {
+            if ('speechSynthesis' in window) {
+                if (isPaused && speech) {
+                    window.speechSynthesis.resume();
+                    isPaused = false;
+                } else {
+                    window.speechSynthesis.cancel();
+                    
+                    speech = new SpeechSynthesisUtterance(getTextContent());
+                    speech.lang = 'es-ES';
+                    speech.rate = 0.9;
+                    speech.pitch = 1;
+                    speech.volume = 1;
+                    
+                    speech.onstart = function() {
+                        document.getElementById('playButton').style.display = 'none';
+                        document.getElementById('pauseButton').style.display = 'inline-block';
+                    };
+                    
+                    speech.onend = function() {
+                        document.getElementById('playButton').style.display = 'inline-block';
+                        document.getElementById('pauseButton').style.display = 'none';
+                        document.getElementById('playButton').innerHTML = '🎧 Escuchar Audio';
+                        isPaused = false;
+                    };
+                    
+                    window.speechSynthesis.speak(speech);
+                }
+                
+                document.getElementById('playButton').innerHTML = '▶️ Continuar';
+            } else {
+                alert('Tu navegador no soporta la función de audio. Puedes leer el contenido normalmente.');
+            }
+        });
+
+        document.getElementById('pauseButton').addEventListener('click', function() {
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.pause();
+                isPaused = true;
+                document.getElementById('playButton').style.display = 'inline-block';
+                document.getElementById('pauseButton').style.display = 'none';
+                document.getElementById('playButton').innerHTML = '▶️ Continuar';
+            }
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio 3: Limpieza Mental Profunda</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 95%;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 50px 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="neurons" patternUnits="userSpaceOnUse" width="50" height="50"><circle cx="25" cy="25" r="2" fill="rgba(255,255,255,0.1)"/><line x1="25" y1="25" x2="45" y2="15" stroke="rgba(255,255,255,0.1)" stroke-width="1"/><line x1="25" y1="25" x2="35" y2="40" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23neurons)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 25px;
+        }
+
+        .audio-controls {
+            margin-top: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-pause {
+            background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+        }
+
+        .content {
+            padding: 60px 80px;
+        }
+
+        .neuroplasticity-visual {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #2c3e50;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neuroplasticity-visual h2 {
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .neuroplasticity-visual p {
+            font-size: 1.2em;
+            line-height: 1.8;
+        }
+
+        .brain-network {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .neuron {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.3);
+            border: 3px solid rgba(255,255,255,0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            animation: pulse 2s ease-in-out infinite;
+            position: relative;
+            font-size: 2em;
+        }
+
+        .neuron::before {
+            content: '🧠';
+        }
+
+        .connection {
+            height: 3px;
+            background: rgba(102,126,234,0.4);
+            margin: 15px 0;
+            animation: flow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        @keyframes flow {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.3; }
+        }
+
+        .phase-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 35px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border-left: 6px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .fase-inicial { border-left-color: #ff6b6b; }
+        .fase-adaptacion { border-left-color: #4ecdc4; }
+        .fase-consolidacion { border-left-color: #45b7d1; }
+
+        .phase-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .phase-content {
+            color: #555;
+            line-height: 1.9;
+            font-size: 1.2em;
+        }
+
+        .analogy-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+            border: 2px solid rgba(0,0,0,0.05);
+        }
+
+        .analogy-title {
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .timeline {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .timeline h3 {
+            font-size: 1.6em;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+        }
+
+        .timeline-day {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-right: 20px;
+            min-width: 100px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .tip-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .tip-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .tip-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 5px;
+            animation: progress 4s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 20%; }
+            50% { width: 80%; }
+            100% { width: 20%; }
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #feca57 0%, #ff9ff3 100%);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .important-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 5px solid #f39c12;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .important-box strong {
+            color: #d68910;
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px 0;
+        }
+
+        .progress-step {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 0 15px;
+            position: relative;
+        }
+
+        .progress-step.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .progress-step.completed {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+        }
+
+        .progress-line {
+            height: 4px;
+            width: 80px;
+            background: #ddd;
+            margin: 0 5px;
+        }
+
+        .progress-line.completed {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        }
+
+        ol, ul {
+            margin: 25px 0 25px 40px;
+            line-height: 2;
+        }
+
+        ol li, ul li {
+            margin: 12px 0;
+            font-size: 1.15em;
+        }
+ @media (max-width: 1200px) {
+            .container {
+                width: 98%;
+            }
+            
+            .content {
+                padding: 40px 50px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .header p {
+                font-size: 1.1em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .brain-center {
+                width: 120px;
+                height: 120px;
+                font-size: 3em;
+            }
+            
+            .thought-bubble {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5em;
+            }
+            
+            .progress-step {
+                width: 40px;
+                height: 40px;
+                margin: 0 8px;
+                font-size: 1em;
+            }
+            
+            .progress-line {
+                width: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 15px 25px;
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 1.4em;
+            }
+            
+            .section-content {
+                font-size: 1.1em;
+            }
+            
+            .progress-step {
+                width: 35px;
+                height: 35px;
+                margin: 0 5px;
+                font-size: 0.9em;
+            }
+            
+            .progress-line {
+                width: 25px;
+            }
+        }
+   /* --- Ajustes móviles y tipografía fluida --- */
+html {
+  /* Evita que iOS reescale el texto */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  /* Tamaño base fluido para todo el sitio */
+  font-size: clamp(0.95rem, 2.6vw, 1.05rem);
+  line-height: 1.6;
+}
+
+/* Títulos fluidos */
+.header h1 {
+  font-size: clamp(1.4rem, 5.5vw, 2.2rem);
+  line-height: 1.2;
+}
+.section-title,
+.intro-section h2 {
+  font-size: clamp(1.1rem, 4.2vw, 1.6rem);
+  line-height: 1.3;
+}
+
+/* Párrafos y textos largos */
+.header p,
+.section-content,
+.intro-section p {
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+  line-height: 1.7;
+  overflow-wrap: anywhere; /* Evita desbordes por palabras largas */
+}
+
+/* Contenedores más “respirables” en móvil */
+.container { width: min(95%, 1200px); }
+.content { padding: clamp(1rem, 3.5vw, 2.5rem); }
+.header  { padding: clamp(1.2rem, 4vw, 3rem) clamp(1rem, 3.5vw, 2rem); }
+
+/* Imagen de portada y audio 100% ancho disponible */
+.header img,
+.content img,
+audio {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Botones cómodos en móvil */
+.btn {
+  font-size: clamp(0.95rem, 3.2vw, 1rem);
+  padding: clamp(0.6rem, 2.5vw, 1rem) clamp(0.9rem, 3vw, 2rem);
+}
+
+/* Ajustes extra para pantallas muy pequeñas */
+@media (max-width: 420px) {
+  .header p[style] { font-size: inherit !important; } /* neutraliza inline grandes */
+  .intro-section { padding: 1rem; }
+  .stats-grid, .section-card { padding: 1rem; }
+}
+
+/* Opcional: si los emojis agrandan el renglón, limítalo un poquito */
+h1, h2 { white-space: normal; }
+ /* --- Ancho real en móvil (parche anti-estrecho) --- */
+@media (max-width: 600px) {
+  /* usa todo el ancho de la pantalla */
+  .container { max-width: 100vw; width: 100%; margin: 0; border-radius: 0; }
+
+  /* menos margen lateral */
+  .header { padding: 1.25rem 1rem; }
+  .content { padding: 1rem; }
+
+  /* las tarjetas a ancho completo */
+  .intro-section,
+  .section-card,
+  .stats-grid { margin: 0; padding: 1rem; width: 100%; max-width: none; }
+
+  /* evita anchos fijos heredados */
+  .stats-grid,
+  .quiz-section,
+  .quiz-question,
+  .quiz-options,
+  .quiz-option,
+  .stat-card { width: 100% !important; max-width: none !important; }
+
+  /* imágenes y audio sin recorte */
+  img, audio { max-width: 100%; height: auto; display: block; }
+
+  /* gutters laterales mínimos */
+  .intro-section, .section-card { margin-inline: 0; }
+}
+
+/* si algún bloque tenía un ancho duro en desktop, desactívalo en móvil extremo */
+@media (max-width: 420px) {
+  [style*="width:"], [class*="width"], [class*="max-width"] { max-width: 100% !important; }
+}
+/* ===== Quiz: tipografía y layout fluidos ===== */
+
+/* Desktop/tablet: un poco más compacto ya */
+.quiz-section .quiz-option {
+  /* por qué: evitar que el texto “inflé” el botón */
+  font-size: clamp(0.98rem, 1.6vw, 1.05rem);
+  line-height: 1.55;
+  padding: clamp(0.9rem, 1.6vw, 1.15rem) clamp(1rem, 2vw, 1.4rem);
+}
+
+/* Título de bloque del quiz */
+.quiz-section .quiz-title {
+  font-size: clamp(1.05rem, 2.6vw, 1.25rem);
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+}
+
+/* Contenedor: sin anchos fijos */
+.quiz-section,
+.quiz-question,
+.quiz-options {
+  width: 100%;
+  max-width: none;
+}
+
+/* Separación uniforme entre opciones */
+.quiz-options {
+  display: grid;
+  gap: 12px;
+}
+
+/* MÓVIL: reducir más para que “respire” y no se vea estrecho */
+@media (max-width: 600px) {
+  .quiz-section .quiz-option {
+    font-size: clamp(0.94rem, 3.5vw, 1rem);
+    line-height: 1.5;
+    padding: clamp(0.75rem, 3.2vw, 0.95rem) clamp(0.9rem, 4vw, 1.1rem);
+    border-radius: 12px;           /* menos curva = más espacio útil */
+    margin: 0;                     /* sin márgenes laterales */
+  }
+
+  .quiz-section .quiz-title {
+    font-size: clamp(1rem, 3.8vw, 1.15rem);
+    margin-bottom: 0.6rem;
+  }
+
+  /* Asegura ancho completo y elimina “estrechez” por bordes/paddings altos */
+  .section-card.identificacion,
+  .quiz-section {
+    padding: 1rem;
+    margin-inline: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* MÓVIL PEQUEÑO extra */
+@media (max-width: 390px) {
+  .quiz-section .quiz-option {
+    font-size: 0.92rem;
+    padding: 0.7rem 0.9rem;
+  }
+}
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+/* ==== Audio 3: ajustes móviles finos ==== */
+@media (max-width: 600px) {
+  /* Tipografía más compacta */
+  .header h1 { font-size: clamp(1.2rem, 5.2vw, 1.6rem); line-height: 1.2; }
+  .header p  { font-size: clamp(.95rem, 3.6vw, 1.05rem); line-height: 1.5; }
+
+  .section-title,
+  .phase-title,
+  .analogy-title,
+  .neuroplasticity-visual h2 {
+    font-size: clamp(1.05rem, 4.4vw, 1.25rem);
+    line-height: 1.25;
+    margin-bottom: .5rem;
+  }
+
+  .section-content,
+  .phase-content,
+  .analogy-box p,
+  .timeline-item div,
+  .content p {
+    font-size: clamp(.95rem, 3.4vw, 1.02rem);
+    line-height: 1.5;           /* antes 1.6–1.7 -> más compacto */
+    margin-bottom: .65rem;
+  }
+
+  /* Menos aire en contenedores */
+  .content { padding: 16px; }
+  .phase-card, .analogy-box, .timeline { padding: 14px; margin-bottom: 12px; border-radius: 14px; }
+  .neuroplasticity-visual { padding: 16px; margin-bottom: 14px; border-radius: 14px; }
+
+  /* Cerebritos (neuronas) */
+  .brain-network {
+    display: flex;
+    flex-wrap: wrap;     /* permiten varias filas */
+    gap: 10px;           /* espacio coherente entre ellos */
+    justify-content: center;
+    margin: 10px 0;
+  }
+  .neuron {
+    width: 44px;         /* antes 60px */
+    height: 44px;
+    border-radius: 50%;
+    animation-duration: 2.4s;   /* más suave en móvil */
+  }
+  .neuron::before { font-size: 18px; } /* emoji más pequeño */
+
+  /* Línea animada más discreta en móvil */
+  .connection { height: 2px; opacity: .5; margin: 6px 0; }
+}
+
+/* Un pelín más apretado todavía en pantallas muy pequeñas */
+@media (max-width: 380px) {
+  .neuron { width: 40px; height: 40px; }
+  .content { padding: 14px; }
+  .phase-card, .analogy-box, .timeline { padding: 12px; }
+}
+.final-message {
+  margin: 2.5rem auto;
+  padding: 1.2rem 2rem;
+  text-align: center;
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+  border-radius: 40px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(161, 140, 209, 0.4);
+  max-width: 650px;
+}
+
+.final-message {
+  margin: 2.5rem auto;
+  padding: 1.2rem 2rem;
+  text-align: center;
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+  border-radius: 40px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(161, 140, 209, 0.4);
+  max-width: 650px;
+}
+
+.final-message::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.7),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: shine 3.5s infinite;
+}
+
+@keyframes shine {
+  0%   { left: -100%; }
+  60%  { left: 120%; }
+  100% { left: 120%; }
+}
+
+
+
+
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧹 Día 3: Limpieza Mental Profunda</h1>
+            <p>Elimina la sobrecarga mental acumulada</p>
+           
+            <div class="audio-controls">
+              <!-- Portada del audio -->
+<img src="3diaportada.jpeg" 
+     alt="Portada Día 3" 
+     style="max-width:250px; border-radius:12px; margin:1rem auto; display:block;">
+
+<!-- Reproductor de audio -->
+<audio controls preload="metadata" style="width:100%; max-width:500px; margin: 1rem auto; display:block;">
+  <source src="3diaaudio.MP3" type="audio/mpeg">
+  Tu navegador no soporta la reproducción de audio.
+</audio>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="neuroplasticity-visual">
+                <h2>🧹 Limpieza Mental Profunda - Día 3</h2>
+                <p><strong>¡Bienvenido al día 3!</strong> Ayer practicaste la técnica de los 90 segundos y notaste cómo tu mente comenzó a sentirse más clara, con menos "ruido de fondo".</p>
+                <br>
+                <p>Hoy vamos más profundo. Es momento de hacer una <span class="highlight">limpieza completa</span> de toda esa sobrecarga mental que has estado acumulando.</p>
+                <div class="brain-network">
+                    <div class="neuron"></div>
+                    <div class="neuron"></div>
+                    <div class="neuron"></div>
+                </div>
+                <div class="connection"></div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="analogy-box">
+                <div class="analogy-title">🏠 Analogía: Tu Mente como una Casa</div>
+                <p>Imagina que tu mente es una casa que has estado llenando de cosas durante años: pensamientos repetitivos, preocupaciones, listas mentales, recuerdos de notificaciones, fragmentos de conversaciones...</p>
+                <br>
+                <p>Ayer empezaste a <strong>ordenar las habitaciones</strong> con la técnica de 90 segundos. Hoy vamos a hacer una <strong>limpieza general completa</strong> - como esos programas de TV donde transforman completamente un espacio abarrotado.</p>
+            </div>
+
+            <h2 style="font-size: 2em; margin: 40px 0 30px; color: #333;">🧠 ¿Qué es la Sobrecarga Mental? - La Ciencia Detrás</h2>
+
+            <div class="phase-card fase-inicial">
+                <div class="phase-title">⚡ Lo Que Sucede en Tu Cerebro</div>
+                <div class="phase-content">
+                    <p><strong>Neurobiológicamente, la sobrecarga mental ocurre cuando:</strong></p>
+                    <br>
+                    <p>🧩 <strong>Tu corteza prefrontal</strong> (el "CEO" de tu cerebro) se agota de tomar decisiones constantemente. Es como un músculo que se cansa después de muchas repeticiones.</p>
+                    <br>
+                    <p>⚡ <strong>Tu sistema nervioso simpático</strong> (modo "lucha o huida") permanece activado todo el tiempo, liberando cortisol y adrenalina de manera crónica.</p>
+                    <br>
+                    <p>🔄 <strong>Tus niveles de GABA</strong> (neurotransmisor de la calma) disminuyen, mientras que la noradrenalina (de la hiperactivación) aumenta.</p>
+                </div>
+            </div>
+
+            <div class="phase-card fase-adaptacion">
+                <div class="phase-title">📱 Las Fuentes de Sobrecarga</div>
+                <div class="phase-content">
+                    <p><strong>Cada vez que experimentas esto, tu cerebro procesa:</strong></p>
+                    <ul style="margin-left: 25px; margin-top: 15px;">
+                        <li><strong>Interrupciones digitales:</strong> Cada notificación libera una micro-dosis de cortisol</li>
+                        <li><strong>Decisiones micro:</strong> Cada elección (¿qué ver?) agota tu corteza prefrontal</li>
+                        <li><strong>FOMO constante:</strong> Activa tu amígdala (centro del miedo) repetidamente</li>
+                        <li><strong>Multitasking:</strong> Fuerza cambios de contexto que consumen 25% más energía neuronal</li>
+                        <li><strong>Bucles de pensamiento:</strong> Crean surcos neuronales obsesivos (como un disco rayado)</li>
+                    </ul>
+                    <br>
+                    <p><strong>Resultado:</strong> Es como tener <strong>50 pestañas abiertas en el navegador de tu mente</strong> - tu "RAM neuronal" se agota y el sistema se vuelve lento.</p>
+                </div>
+            </div>
+
+            <div class="analogy-box">
+                <div class="analogy-title">💻 Analogía + Neurobiología: Defragmentar el Disco Duro Mental</div>
+                <p>¿Recuerdas cuando las computadoras se volvían lentas y había que "defragmentar el disco duro"? Tu mente necesita lo mismo, pero a nivel neurobiológico.</p>
+                <br>
+                <p><strong>La sobrecarga mental es como tener:</strong></p>
+                <p>📸 <strong>Fragmentación neuronal:</strong> Información dispersa en diferentes áreas del cerebro</p>
+                <p>📸 <strong>Sinapsis "sucias":</strong> Acumulación de metabolitos neuronales que interfieren con la comunicación</p>
+                <p>📸 <strong>Redes neuronales sobrecargadas:</strong> Como cables eléctricos que transportan más corriente de la que pueden manejar</p>
+                <br>
+                <p>La limpieza profunda <strong>activa tu sistema glinfático</strong> (el "sistema de limpieza" del cerebro) para eliminar toxinas neuronales y reorganizar las conexiones de manera más eficiente.</p>
+            </div>
+
+            <h2 style="font-size: 2em; margin: 40px 0 30px; color: #333;">🔧 Técnica de Limpieza Mental Profunda</h2>
+
+            <div class="phase-card fase-adaptacion">
+                <div class="phase-title">📝 Paso 1: Volcado Mental (10 minutos)</div>
+                <div class="phase-content">
+                    <p><strong>¿Qué hacer?</strong> Toma papel y lápiz. Durante 10 minutos, escribe TODO lo que tienes en tu mente. Sin filtros, sin orden, sin juicios.</p>
+                    <br>
+                    <p><strong>Incluye:</strong></p>
+                    <ul style="margin-left: 25px; margin-top: 15px;">
+                        <li>Tareas pendientes</li>
+                        <li>Preocupaciones</li>
+                        <li>Ideas sueltas</li>
+                        <li>Conversaciones incompletas</li>
+                        <li>Cualquier cosa que "dé vueltas" en tu cabeza</li>
+                    </ul>
+                    <br>
+                    <p><em>Es como vaciar completamente todos los cajones de tu escritorio mental en el suelo.</em></p>
+                </div>
+            </div>
+
+
+     <div class="phase-card fase-consolidacion">
+                <div class="phase-title">🗂️ Paso 2: Clasificación Mental (5 minutos)</div>
+                <div class="phase-content">
+                    <p><strong>Ahora organiza lo que escribiste en 4 categorías:</strong></p>
+                    <br>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="background: #ffebee; padding: 15px; border-radius: 8px;">
+                            <strong>🚨 Urgente e Importante</strong><br>
+                            <small>Hacer hoy</small>
+                        </div>
+                        <div style="background: #e8f5e8; padding: 15px; border-radius: 8px;">
+                            <strong>📅 Importante, no Urgente</strong><br>
+                            <small>Programar para después</small>
+                        </div>
+                        <div style="background: #fff3e0; padding: 15px; border-radius: 8px;">
+                            <strong>⚡ Urgente, no Importante</strong><br>
+                            <small>Delegar o hacer rápido</small>
+                        </div>
+                        <div style="background: #f3e5f5; padding: 15px; border-radius: 8px;">
+                            <strong>🗑️ Ni Urgente ni Importante</strong><br>
+                            <small>Eliminar de tu mente</small>
+                        </div>
+                    </div>
+                </div>
+       </div>
+
+            <div class="phase-card fase-inicial">
+                <div class="phase-title">💨 Paso 3: Exhalación de Liberación + Activación del Nervio Vago (3 minutos)</div>
+                <div class="phase-content">
+                    <p><strong>Respiración neurobiológica de limpieza mental:</strong></p>
+                    <ol style="margin-left: 25px; margin-top: 15px;">
+                        <li><strong>Inhala 4 segundos</strong> - activas tu sistema nervioso simpático controladamente</li>
+                        <li><strong>Mantén 4 segundos</strong> - permites que se active la corteza prefrontal (control consciente)</li>
+                        <li><strong>Exhala 8 segundos</strong> - estimulas el nervio vago, activando el sistema parasimpático (calma)</li>
+                    </ol>
+                    <br>
+                    <p><strong>¿Qué sucede neurobiológicamente?</strong></p>
+                    <p>🧬 Se libera <strong>GABA</strong> (neurotransmisor de la relajación)</p>
+                    <p>🧬 Disminuye el <strong>cortisol</strong> y la <strong>noradrenalina</strong></p>
+                    <p>🧬 Se activa la <strong>respuesta de relajación</strong> que contrarresta el estrés acumulado</p>
+                    <br>
+                    <p>Repite 10 veces. Con cada exhalación, literalmente estás <strong>"reiniciando" tu sistema nervioso</strong> y limpiando metabolitos del estrés.</p>
+                </div>
+            </div>
+
+            <div class="timeline">
+                <h3>🎯 Plan de Acción Post-Limpieza</h3>
+                <div class="timeline-item">
+                    <div class="timeline-day">Ahora</div>
+                    <div>Realiza SOLO las tareas "Urgente e Importante" de tu lista</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-day">Hoy</div>
+                    <div>Programa en tu calendario las tareas "Importante, no Urgente"</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-day">Esta semana</div>
+                    <div>Delega o elimina rápidamente las tareas "Urgente, no Importante"</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-day">Nunca más</div>
+                    <div>Olvídate conscientemente de todo lo "Ni Urgente ni Importante"</div>
+                </div>
+            </div>
+
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">🧘</div>
+                    <h4>Mantenimiento Neurológico #1</h4>
+                    <p><strong>Volcado nocturno:</strong> 5 minutos cada noche activa tu sistema glinfático durante el sueño para "lavar" tu cerebro</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">📕</div>
+                    <h4>Mantenimiento Neurológico #2</h4>
+                    <p><strong>Horas sin notificaciones:</strong> Permite que tu corteza prefrontal se recupere del "cansancio de decisiones"</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">📱</div>
+                    <h4>Mantenimiento Neurológico #3</h4>
+                    <p><strong>Una tarea = Una red neuronal:</strong> El multitasking consume 25% más energía y crea interferencia sináptica</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">🚶</div>
+                    <h4>Mantenimiento Neurológico #4</h4>
+                    <p><strong>Caminatas sin dispositivos:</strong> Activa la red neuronal por defecto (DMN) que consolida memorias y genera insights</p>
+                </div>
+            </div>
+
+            <div class="progress-indicator">
+                <div class="progress-step completed">1</div>
+                <div class="progress-line completed"></div>
+                <div class="progress-step completed">2</div>
+                <div class="progress-line completed"></div>
+                <div class="progress-step active">3</div>
+                <div class="progress-line"></div>
+                <div class="progress-step">4</div>
+                <div class="progress-line"></div>
+                <div class="progress-step">5</div>
+            </div>
+
+            <div class="analogy-box" style="margin-top: 40px; background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); color: white; border: none; padding: 40px;">
+                <div class="analogy-title" style="color: white; font-size: 1.6em;">🌟 El Resultado: Una Mente como Agua Clara</div>
+                <p style="font-size: 1.2em;">Al final de esta limpieza profunda, tu mente se sentirá como un lago después de una tormenta: <strong>el sedimento se asienta, el agua se aclara, y puedes ver hasta el fondo</strong>.</p>
+                <br>
+                <p style="font-size: 1.15em;"><strong>¿Qué sucedió neurobiológicamente?</strong></p>
+                <p style="font-size: 1.1em;">🧠 Tu <strong>corteza prefrontal</strong> se restauró y puede tomar decisiones con claridad</p>
+                <p style="font-size: 1.1em;">🧠 Tu <strong>sistema nervioso parasimpático</strong> está activado (modo "descansar y digerir")</p>
+                <p style="font-size: 1.1em;">🧠 Los niveles de <strong>GABA y serotonina</strong> se equilibraron, creando sensación de bienestar</p>
+                <p style="font-size: 1.1em;">🧠 El <strong>sistema glinfático</strong> eliminó metabolitos acumulados del estrés crónico</p>
+                <br>
+                <p style="font-size: 1.15em;">Esta claridad mental no es solo una sensación agradable - es tu <strong>capacidad cognitiva real</strong> funcionando sin interferencias neuroquímicas.</p>
+                <br>
+                <p style="font-size: 1.2em;"><strong>¿Tu misión para hoy?</strong> Completar estos 3 pasos y experimentar cómo se siente tener un cerebro verdaderamente optimizado a nivel neurobiológico.</p>
+                <br>
+             <div class="final-message">
+  Tu MENTE es poderosa y TÚ tienes el CONTROL
+</div>
+
+
+    <script>
+        let speech = null;
+        let isPaused = false;
+        let currentUtterance = null;
+        let textChunks = [];
+        let currentChunkIndex = 0;
+
+        function splitTextIntoChunks(text) {
+            const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+            const chunks = [];
+            let currentChunk = '';
+            
+            sentences.forEach(sentence => {
+                if ((currentChunk + sentence).length < 500) {
+                    currentChunk += sentence;
+                } else {
+                    if (currentChunk) chunks.push(currentChunk);
+                    currentChunk = sentence;
+                }
+            });
+            
+            if (currentChunk) chunks.push(currentChunk);
+            return chunks;
+        }
+
+        function getTextContent() {
+            const content = document.querySelector('.content');
+            let text = content.innerText;
+            
+            text = text.replace(/🧹|🧠|🏠|⚡|📱|💻|📝|🗂️|💨|🎯|🧘|📕|📱|🚶|🌟|🧬|📸|🧩|🔄|🚨|📅|🗑️/g, '');
+            text = text.replace(/•/g, '');
+            text = text.replace(/\n+/g, '. ');
+            
+            return text;
+        }
+
+        function speakNextChunk() {
+            if (currentChunkIndex >= textChunks.length) {
+                document.getElementById('playButton').style.display = 'inline-block';
+                document.getElementById('pauseButton').style.display = 'none';
+                document.getElementById('playButton').innerHTML = '🎧 Escuchar Audio';
+                currentChunkIndex = 0;
+                return;
+            }
+            
+            currentUtterance = new SpeechSynthesisUtterance(textChunks[currentChunkIndex]);
+            currentUtterance.lang = 'es-ES';
+            currentUtterance.rate = 0.9;
+            currentUtterance.pitch = 1;
+            currentUtterance.volume = 1;
+            
+            currentUtterance.onend = function() {
+                currentChunkIndex++;
+                if (!isPaused) {
+                    speakNextChunk();
+                }
+            };
+            
+            window.speechSynthesis.speak(currentUtterance);
+        }
+
+        document.getElementById('playButton').addEventListener('click', function() {
+            if ('speechSynthesis' in window) {
+                if (isPaused) {
+                    window.speechSynthesis.resume();
+                    isPaused = false;
+                    document.getElementById('playButton').style.display = 'none';
+                    document.getElementById('pauseButton').style.display = 'inline-block';
+                } else {
+                    window.speechSynthesis.cancel();
+                    textChunks = splitTextIntoChunks(getTextContent());
+                    currentChunkIndex = 0;
+                    
+                    document.getElementById('playButton').style.display = 'none';
+                    document.getElementById('pauseButton').style.display = 'inline-block';
+                    
+                    speakNextChunk();
+                }
+            } else {
+                alert('Tu navegador no soporta la función de audio. Puedes leer el contenido normalmente.');
+            }
+        });
+
+        document.getElementById('pauseButton').addEventListener('click', function() {
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.pause();
+                isPaused = true;
+                document.getElementById('playButton').style.display = 'inline-block';
+                document.getElementById('pauseButton').style.display = 'none';
+                document.getElementById('playButton').innerHTML = '▶️ Continuar';
+            }
+        });
+
+        window.addEventListener('beforeunload', function() {
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+            }
+        });
+    </script>
+</body>

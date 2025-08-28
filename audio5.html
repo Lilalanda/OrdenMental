@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Día 5: Consolidación Neurológica</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 95%;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+            padding: 50px 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="shield" patternUnits="userSpaceOnUse" width="50" height="50"><circle cx="25" cy="25" r="12" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><path d="M25,15 L25,35 M15,25 L35,25" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23shield)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 25px;
+        }
+
+        .audio-controls {
+            margin-top: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 35px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            margin: 0 15px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+        }
+
+        .content {
+            padding: 60px 80px;
+            line-height: 1.9;
+        }
+
+        .completion-visual {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 25px;
+            padding: 45px;
+            margin-bottom: 45px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .transformation-journey {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 35px 0;
+            align-items: center;
+        }
+
+        .journey-day {
+            text-align: center;
+            padding: 25px;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .journey-day:hover {
+            transform: translateY(-10px);
+        }
+
+        .day-1 { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; }
+        .day-2 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
+        .day-3 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+        .day-4 { background: linear-gradient(135deg, #96ceb4 0%, #ffeaa7 100%); color: #2d3436; }
+        .day-5 { background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); color: white; 
+            animation: glow 2s ease-in-out infinite;
+            border: 3px solid rgba(255,255,255,0.5);
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 25px rgba(0, 184, 148, 0.3); }
+            50% { box-shadow: 0 0 35px rgba(0, 184, 148, 0.6); }
+        }
+
+        .day-icon {
+            font-size: 5.0em;
+            margin-bottom: 15px;
+        }
+
+        .day-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 25px;
+            padding: 45px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-left: 6px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+        }
+
+        .problema { border-left-color: #ff6b6b; }
+        .sistema { border-left-color: #00b894; }
+        .protocolo { border-left-color: #667eea; }
+        .rutina { border-left-color: #feca57; }
+        .mantenimiento { border-left-color: #fd79a8; }
+
+        .section-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .section-content {
+            color: #555;
+            line-height: 2;
+            font-size: 1.2em;
+        }
+
+        .system-components {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 45px 0;
+        }
+
+        .component-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 250px;
+        }
+
+        .component-icon {
+            font-size: 4em;
+            margin-bottom: 25px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .component-card:nth-child(1) .component-icon { animation-delay: 0s; }
+        .component-card:nth-child(2) .component-icon { animation-delay: 1s; }
+        .component-card:nth-child(3) .component-icon { animation-delay: 2s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .component-title {
+            font-size: 1.6em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .protocol-builder {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 25px;
+            padding: 45px;
+            margin: 45px 0;
+        }
+
+        .protocol-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 35px;
+            text-align: center;
+        }
+
+        .protocol-timeline {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 35px;
+            margin: 35px 0;
+            align-items: start;
+        }
+
+        .time-slot {
+            background: #8B4513;
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            font-weight: bold;
+            position: sticky;
+            top: 20px;
+            font-size: 1.2em;
+        }
+
+        .protocol-options {
+            display: grid;
+            gap: 25px;
+        }
+
+        .protocol-option {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            border: 3px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .protocol-option:hover {
+            border-color: #00b894;
+            transform: translateX(10px);
+        }
+
+        .protocol-option.selected {
+            border-color: #00b894;
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+        }
+
+        .option-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .routine-builder {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 25px;
+            padding: 45px;
+            margin: 45px 0;
+            border: 3px solid #dee2e6;
+        }
+
+        .routine-title {
+            font-size: 1.7em;
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .routine-sections {
+            display: grid;
+            gap: 30px;
+        }
+
+        .routine-section {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid #dee2e6;
+        }
+
+        .routine-section h4 {
+            color: #00b894;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .custom-routine {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            margin: 30px 0;
+            border: 3px dashed #ced4da;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .custom-routine.filled {
+            border-color: #00b894;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            align-items: flex-start;
+        }
+
+        .analogy-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border: 2px solid #ffeaa7;
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+        }
+
+        .analogy-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .neurobiology-box {
+            background: linear-gradient(135deg, #e8f4fd 0%, #f0f4ff 100%);
+            border: 3px solid #4dabf7;
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+        }
+
+        .neuro-title {
+            font-weight: bold;
+            color: #1971c2;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #feca57 0%, #ff9ff3 100%);
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px 0;
+        }
+
+        .progress-step {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 18px;
+            position: relative;
+            font-size: 1.3em;
+        }
+
+        .progress-step.active {
+            background: linear-gradient(135deg, #96ceb4 0%, #ffeaa7 100%);
+            color: #2d3436;
+        }
+        .progress-step.completed {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+        }
+
+        .progress-line {
+            height: 5px;
+            width: 85px;
+            background: #ddd;
+            margin: 0 10px;
+        }
+
+        .progress-line.completed {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        }
+
+        .success-celebration {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+            border-radius: 25px;
+            padding: 60px;
+            margin: 45px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .celebration-icon {
+            font-size: 6em;
+            margin-bottom: 30px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-25px); }
+            60% { transform: translateY(-12px); }
+        }
+
+       @media (max-width: 1200px) {
+            .container {
+                width: 98%;
+            }
+            
+            .content {
+                padding: 40px 50px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .header p {
+                font-size: 1.1em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .brain-center {
+                width: 120px;
+                height: 120px;
+                font-size: 3em;
+            }
+            
+            .thought-bubble {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5em;
+            }
+            
+            .progress-step {
+                width: 40px;
+                height: 40px;
+                margin: 0 8px;
+                font-size: 1em;
+            }
+            
+            .progress-line {
+                width: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 15px 25px;
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 1.4em;
+            }
+            
+            .section-content {
+                font-size: 1.1em;
+            }
+            
+            .progress-step {
+                width: 35px;
+                height: 35px;
+                margin: 0 5px;
+                font-size: 0.9em;
+            }
+            
+            .progress-line {
+                width: 25px;
+            }
+        }
+   /* --- Ajustes móviles y tipografía fluida --- */
+html {
+  /* Evita que iOS reescale el texto */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  /* Tamaño base fluido para todo el sitio */
+  font-size: clamp(0.95rem, 2.6vw, 1.05rem);
+  line-height: 1.6;
+}
+
+/* Títulos fluidos */
+.header h1 {
+  font-size: clamp(1.4rem, 5.5vw, 2.2rem);
+  line-height: 1.2;
+}
+.section-title,
+.intro-section h2 {
+  font-size: clamp(1.1rem, 4.2vw, 1.6rem);
+  line-height: 1.3;
+}
+
+/* Párrafos y textos largos */
+.header p,
+.section-content,
+.intro-section p {
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+  line-height: 1.7;
+  overflow-wrap: anywhere; /* Evita desbordes por palabras largas */
+}
+
+/* Contenedores más “respirables” en móvil */
+.container { width: min(95%, 1200px); }
+.content { padding: clamp(1rem, 3.5vw, 2.5rem); }
+.header  { padding: clamp(1.2rem, 4vw, 3rem) clamp(1rem, 3.5vw, 2rem); }
+
+/* Imagen de portada y audio 100% ancho disponible */
+.header img,
+.content img,
+audio {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Botones cómodos en móvil */
+.btn {
+  font-size: clamp(0.95rem, 3.2vw, 1rem);
+  padding: clamp(0.6rem, 2.5vw, 1rem) clamp(0.9rem, 3vw, 2rem);
+}
+
+/* Ajustes extra para pantallas muy pequeñas */
+@media (max-width: 420px) {
+  .header p[style] { font-size: inherit !important; } /* neutraliza inline grandes */
+  .intro-section { padding: 1rem; }
+  .stats-grid, .section-card { padding: 1rem; }
+}
+
+/* Opcional: si los emojis agrandan el renglón, limítalo un poquito */
+h1, h2 { white-space: normal; }
+ /* --- Ancho real en móvil (parche anti-estrecho) --- */
+@media (max-width: 600px) {
+  /* usa todo el ancho de la pantalla */
+  .container { max-width: 100vw; width: 100%; margin: 0; border-radius: 0; }
+
+  /* menos margen lateral */
+  .header { padding: 1.25rem 1rem; }
+  .content { padding: 1rem; }
+
+  /* las tarjetas a ancho completo */
+  .intro-section,
+  .section-card,
+  .stats-grid { margin: 0; padding: 1rem; width: 100%; max-width: none; }
+
+  /* evita anchos fijos heredados */
+  .stats-grid,
+  .quiz-section,
+  .quiz-question,
+  .quiz-options,
+  .quiz-option,
+  .stat-card { width: 100% !important; max-width: none !important; }
+
+  /* imágenes y audio sin recorte */
+  img, audio { max-width: 100%; height: auto; display: block; }
+
+  /* gutters laterales mínimos */
+  .intro-section, .section-card { margin-inline: 0; }
+}
+
+/* si algún bloque tenía un ancho duro en desktop, desactívalo en móvil extremo */
+@media (max-width: 420px) {
+  [style*="width:"], [class*="width"], [class*="max-width"] { max-width: 100% !important; }
+}
+/* ===== Quiz: tipografía y layout fluidos ===== */
+
+/* Desktop/tablet: un poco más compacto ya */
+.quiz-section .quiz-option {
+  /* por qué: evitar que el texto “inflé” el botón */
+  font-size: clamp(0.98rem, 1.6vw, 1.05rem);
+  line-height: 1.55;
+  padding: clamp(0.9rem, 1.6vw, 1.15rem) clamp(1rem, 2vw, 1.4rem);
+}
+
+/* Título de bloque del quiz */
+.quiz-section .quiz-title {
+  font-size: clamp(1.05rem, 2.6vw, 1.25rem);
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+}
+
+/* Contenedor: sin anchos fijos */
+.quiz-section,
+.quiz-question,
+.quiz-options {
+  width: 100%;
+  max-width: none;
+}
+
+/* Separación uniforme entre opciones */
+.quiz-options {
+  display: grid;
+  gap: 12px;
+}
+
+/* MÓVIL: reducir más para que “respire” y no se vea estrecho */
+@media (max-width: 600px) {
+  .quiz-section .quiz-option {
+    font-size: clamp(0.94rem, 3.5vw, 1rem);
+    line-height: 1.5;
+    padding: clamp(0.75rem, 3.2vw, 0.95rem) clamp(0.9rem, 4vw, 1.1rem);
+    border-radius: 12px;           /* menos curva = más espacio útil */
+    margin: 0;                     /* sin márgenes laterales */
+  }
+
+  .quiz-section .quiz-title {
+    font-size: clamp(1rem, 3.8vw, 1.15rem);
+    margin-bottom: 0.6rem;
+  }
+
+  /* Asegura ancho completo y elimina “estrechez” por bordes/paddings altos */
+  .section-card.identificacion,
+  .quiz-section {
+    padding: 1rem;
+    margin-inline: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* MÓVIL PEQUEÑO extra */
+@media (max-width: 390px) {
+  .quiz-section .quiz-option {
+    font-size: 0.92rem;
+    padding: 0.7rem 0.9rem;
+  }
+}
+.system-components {
+  display: flex;
+  justify-content: center;   /* centra en horizontal */
+  gap: 20px;                 /* espacio entre tarjetas */
+  flex-wrap: wrap;           /* si la pantalla es pequeña, bajan a otra fila */
+  margin: 20px 0;
+}
+
+.component-card {
+  flex: 1 1 250px;           /* se adaptan al ancho */
+  max-width: 300px;          /* no demasiado grandes */
+}
+
+.highlight-box {
+  margin-top: 30px;
+  padding: 20px;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.final-message {
+  margin: 2rem auto;
+  padding: 1.2rem 1.8rem;
+  text-align: center;
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #d4b5f9, #9acdfd); /* pastel suave */
+  border-radius: 40px;
+  max-width: 600px;      /* 🔹 límite de ancho */
+  width: 90%;            /* 🔹 nunca ocupa toda la pantalla */
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 18px rgba(190,170,255,0.4),
+              0 0 28px rgba(150,200,255,0.3); /* glow fijo */
+}
+
+/* ✨ Halo que se mueve */
+.final-message::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 120%;          /* 🔹 halo no tan ancho */
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.6),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: shine 4s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0%   { left: -120%; }
+  50%  { left: 120%; }
+  100% { left: 120%; }
+}
+
+/* === PARCHE PARA LABELS DE OPCIONES EN MÓVIL === */
+@media (max-width: 600px){
+  label {
+    display: flex;
+    align-items: flex-start; /* alinea radio arriba */
+    gap: 10px;
+    white-space: normal !important;   /* permite saltos de línea */
+    overflow-wrap: break-word !important; /* corta palabras largas */
+    word-break: break-word !important;
+    width: 100%; /* ocupa todo el ancho */
+  }
+
+  label span {
+    flex: 1; /* deja que el texto use el espacio */
+    line-height: 1.4;
+  }
+
+  input[type="radio"] {
+    flex-shrink: 0; /* que el circulito no se achique */
+    margin-top: 4px;
+  }
+}
+
+/* === FIX iOS: radios y texto vertical en los MINUTOS === */
+.exercise-section [style*="background: #f8f9fa"] {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block !important;
+  overflow: visible !important;
+}
+
+.exercise-section label {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  width: 100% !important;
+}
+
+.exercise-section label span {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;   /* evita forzar columnas estrechas */
+}
+
+.exercise-section input[type="radio"] {
+  flex: 0 0 auto !important;
+  width: 20px !important;
+  height: 20px !important;
+  margin-top: 4px !important;
+}
+
+/* Botón grande: ancho completo en móvil */
+@media (max-width: 600px) {
+  .btn,
+  .btn.btn-primary {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px !important;
+    border-radius: 14px !important;
+  }
+}
+
+/* ====== Día 5: arreglos móviles y alineación ====== */
+
+/* 1) Journey de 5 días: que respire en móvil */
+@media (max-width: 900px){
+  .transformation-journey{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px){
+  .transformation-journey{ grid-template-columns: 1fr; }
+}
+
+/* 2) Protocolo (izq tiempo + der opciones) → columna única en móvil */
+@media (max-width: 900px){
+  .protocol-timeline{ grid-template-columns: 1fr; gap: 16px; }
+  .time-slot{ position: static; font-size: 1.05em; }
+}
+
+/* 3) Tarjetas de sistema (ya usas flex) – aseguro tamaño en pantallas chicas */
+@media (max-width: 600px){
+  .component-card{ flex: 1 1 100%; max-width: 100%; }
+}
+
+/* 4) Evitar “texto vertical” en labels con radios (bug típico iOS) */
+.routine-section label{
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+.routine-section input[type="radio"]{
+  flex: 0 0 auto;
+  width: 20px; height: 20px; margin-top: 4px;
+}
+.routine-section label > *:not(input){ flex: 1 1 auto; }
+
+/* 5) Botón grande a ancho completo en móvil */
+@media (max-width: 600px){
+  .btn, .btn.btn-primary{
+    display: block !important; width: 100% !important; max-width: 100% !important;
+    padding: 16px !important; border-radius: 14px !important;
+  }
+}
+
+/* 6) Rutina generada: presentación en 3 zonas (badge | lista | nota) */
+.routine-output{
+  margin-top:22px; border:2px dashed #18a999; background:#e9f9f1;
+  border-radius:16px; padding:18px;
+}
+.routine-grid{
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+  /* evita quiebres raros */
+  word-break: normal;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+.routine-badge{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:700;
+  color:#0f766e;
+  flex:0 0 220px;        /* ancho sugerido en desktop */
+  min-width:180px;       /* no se comprime demasiado */
+}
+.routine-badge .emoji{ font-size:1.4rem; }
+.routine-list{
+  display:grid;
+  gap:10px;
+  color:#0f172a;
+  flex:1 1 auto;         /* que se lleve el espacio */
+  min-width:0;           /* crucial para que pueda encogerse sin romper */
+}
+.routine-item{
+  display:grid;
+  grid-template-columns: 120px 1fr;
+  gap:10px;
+  align-items:flex-start;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+.routine-item .tag{
+  font-weight:800;
+  color:#0f766e;
+}
+.routine-note{
+  background:#dff7ef;
+  border:1px solid #9ae6c9;
+  border-radius:12px;
+  padding:14px;
+  font-weight:700;
+  color:#0e7490;
+  text-align:center;
+  flex:0 0 240px;        /* ancho sugerido en desktop */
+}
+
+.hidden{ display:none !important; }
+
+/* Pantallas medianas: que la nota baje debajo y ocupe ancho completo */
+@media (max-width: 900px){
+  .routine-note{
+    flex:1 1 100%;
+    order:3;             /* fuerzo a ir abajo */
+  }
+  .routine-badge{
+    flex:0 0 200px;
+    min-width:160px;
+  }
+}
+
+/* Móvil: una columna limpia y etiquetas arriba */
+@media (max-width: 600px){
+  .routine-grid{
+    flex-direction:column;
+  }
+  .routine-badge,
+  .routine-note{
+    flex:1 1 auto;
+    width:100%;
+  }
+  .routine-item{
+    grid-template-columns: 1fr;  /* etiqueta arriba, valor abajo */
+  }
+  .routine-item .tag{
+    margin-bottom:4px;
+  }
+  .routine-output{ padding:14px; }
+}
+
+/* ===== FIX Rutina: columnas que no se rompan ===== */
+.routine-output{
+  margin-top:22px;
+  border:2px dashed #18a999;
+  background:#e9f9f1;
+  border-radius:16px;
+  padding:18px;
+}
+
+.routine-grid{
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.routine-badge{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:700;
+  color:#0f766e;
+  flex:0 0 220px;
+  min-width:160px;
+}
+.routine-badge .emoji{ font-size:1.4rem; }
+
+.routine-list{
+  display:grid;
+  gap:10px;
+  color:#0f172a;
+  flex:1 1 auto;
+  min-width:0;
+}
+
+.routine-item{
+  display:grid;
+  grid-template-columns: 120px 1fr;
+  gap:10px;
+  align-items:flex-start;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+.routine-item .tag{
+  font-weight:800;
+  color:#0f766e;
+}
+
+.routine-note{
+  background:#dff7ef;
+  border:1px solid #9ae6c9;
+  border-radius:12px;
+  padding:14px;
+  font-weight:700;
+  color:#0e7490;
+  text-align:center;
+  flex:0 0 240px;
+}
+
+.hidden{ display:none !important; }
+
+/* Tablet: nota baja debajo */
+@media (max-width: 900px){
+  .routine-note{
+    flex:1 1 100%;
+    order:3;
+  }
+  .routine-badge{
+    flex:0 0 200px;
+    min-width:140px;
+  }
+}
+
+/* Móvil: todo a 1 columna */
+@media (max-width: 600px){
+  .routine-grid{ flex-direction:column; }
+  .routine-badge, .routine-note{
+    flex:1 1 auto;
+    width:100%;
+  }
+  .routine-item{ grid-template-columns: 1fr; }
+  .routine-item .tag{ margin-bottom:4px; }
+  .routine-output{ padding:14px; }
+}
+
+/* === AUDIO 5 • PACK DE AJUSTE MÓVIL/TABLET === */
+
+/* Limitar el ancho visual de títulos muy largos */
+.completion-visual h2,
+.success-celebration h3 { 
+  max-width: 22ch; 
+  margin-inline: auto;
+}
+:where(h1,h2,h3,p,li){ hyphens:auto; }
+
+/* Tablet pequeña: 601–900px */
+@media (min-width:601px) and (max-width:900px){
+  .content{ padding:28px 24px; }
+  .transformation-journey{ grid-template-columns: repeat(2,1fr); gap:16px; }
+  .system-components{ display:grid; grid-template-columns: repeat(2,1fr); gap:16px; }
+  .protocol-timeline{ grid-template-columns: 160px 1fr; gap:16px; }
+  .time-slot{ position:static; }
+}
+
+/* MÓVIL ≤600px: tipografías y espacios más contenidos */
+@media (max-width:600px){
+
+  .header{ padding:20px 16px; }
+  .header h1{ font-size: clamp(1.35rem,6vw,1.8rem); margin-bottom:8px; }
+  .header p{ font-size: clamp(0.95rem,3.6vw,1.05rem); margin-bottom:12px; }
+
+  .content{ padding:18px 14px; }
+
+  .section-card{ padding:16px; margin-bottom:16px; border-radius:16px; }
+  .section-title{ font-size: clamp(1.08rem,5vw,1.35rem); margin-bottom:12px; }
+  .section-content{ font-size: clamp(0.96rem,3.5vw,1.05rem); line-height:1.6; }
+
+  /* Hero de los 5 días */
+  .completion-visual{ padding:18px; border-radius:16px; }
+  .completion-visual h2{ font-size: clamp(1.2rem,6vw,1.5rem); }
+
+  .transformation-journey{ grid-template-columns: 1fr; gap:14px; }
+  .journey-day{ padding:16px; min-height:auto; }
+  .day-icon{ font-size:2rem; margin-bottom:8px; }
+  .day-title{ font-size:1rem; }
+
+  /* Tarjetas moradas de los 3 elementos */
+  .system-components{ display:grid; grid-template-columns: 1fr; gap:12px; }
+  .component-card{ padding:18px; border-radius:16px; min-height:auto; }
+  .component-icon{ font-size:2.4rem; margin-bottom:10px; }
+  .component-title{ font-size:1.08rem; margin-bottom:8px; }
+
+  /* Protocolo 10' */
+  .protocol-builder{ padding:16px; border-radius:16px; }
+  .protocol-title{ font-size:1.18rem; margin-bottom:12px; }
+  .protocol-timeline{ grid-template-columns: 1fr; gap:12px; }
+  .time-slot{ position:static; font-size:1rem; padding:12px; border-radius:12px; }
+  .protocol-option{ padding:14px; border-radius:12px; }
+
+  /* Constructor de rutina (radios + input) */
+  .routine-builder{ padding:16px; border-radius:16px; }
+  .routine-section{ padding:14px; border-radius:12px; }
+  .routine-section h4{ font-size:1.05rem; }
+
+  /* Radios con texto sin “columna angosta” */
+  label{ display:flex; align-items:flex-start; gap:10px; white-space:normal !important; }
+  label input[type="radio"]{ margin-top:4px; width:18px; height:18px; flex-shrink:0; }
+  label strong{ line-height:1.35; }
+
+  /* Botón grande a ancho completo */
+  .btn{ width:100%; padding:14px; border-radius:12px; }
+
+  /* —— Salida “Tu Sistema Anti‑Sobrepensamiento” —— */
+  .routine-output{ padding:14px; }
+  .routine-grid{ display:grid; grid-template-columns: 1fr; gap:12px; }
+  .routine-badge{ justify-content:flex-start; }
+  .routine-list{ gap:10px; }
+  .routine-item{ display:grid; grid-template-columns: 92px 1fr; gap:10px; }
+  .routine-item .tag{ font-weight:800; color:#0f766e; }
+  .routine-note{ margin-top:4px; }
+
+  /* Bloque final de celebración */
+  .success-celebration{ padding:20px; border-radius:16px; }
+  .celebration-icon{ font-size:3rem; margin-bottom:10px; }
+  .success-celebration h3{ font-size: clamp(1.2rem,6vw,1.6rem); }
+}
+
+/* ====== Ajustes finales de espaciado ====== */
+
+/* 1. Tarjetas de los días */
+.journey-day {
+  padding: 12px 10px !important;   /* menos relleno interno */
+  min-height: auto !important;     /* quitar altura forzada */
+}
+.journey-day .day-title {
+margin: 2px 0 !important;        /* menos espacio entre icono y título */
+  font-size: clamp(1.2rem, 3.8vw, 1.6rem);
+}
+
+/* 2. Opciones con radios (Mañana, Tarde, Noche) */
+.routine-section label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+  line-height: 1.45;
+  margin: 8px 0 !important;       /* menos espacio vertical */
+  padding: 6px 8px;                /* más compacto */
+}
+.routine-section input[type="radio"] {
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+/* 3. Output de rutina personalizada */
+#personalRoutine.custom-routine {
+  padding: 16px 14px !important;   /* menos padding */
+  font-size: clamp(0.95rem, 3.3vw, 1.05rem);
+  line-height: 1.55;
+}
+#personalRoutine.custom-routine.filled {
+  text-align: left;
+}
+#personalRoutine p {
+  margin: 6px 0 !important;
+}
+
+/* 4. Mobile específico */
+@media (max-width: 600px) {
+  .journey-day { margin: 8px 0 !important; }
+  .routine-section label { font-size: 0.94rem; }
+  #personalRoutine { margin: 12px 0; }
+}
+
+/* === Ajustes compactos y de legibilidad (Día 5) === */
+
+/* 1) Tarjetas de la línea de tiempo (Días 1–5): más compactas */
+.transformation-journey { gap: 14px !important; }
+.journey-day{
+  padding: 12px 14px !important;     /* ↓ menos alto */
+  min-height: 110px !important;      /* fija un mínimo bajo */
+  border-radius: 18px !important;
+}
+.journey-day .day-icon{ font-size: 2rem !important; margin-bottom: 6px !important; }
+.journey-day .day-title{ margin: 2px 0 4px !important; font-size: clamp(1.05rem,3.6vw,1.25rem) !important; }
+.journey-day > div:last-child{ font-size: clamp(0.95rem,3.2vw,1.05rem) !important; }
+
+/* 2) Cuestionario: más ancho para el texto y con mejor respiración */
+.routine-section label{
+  display: grid !important;
+  grid-template-columns: 28px 1fr !important; /* 28px para el radio, resto texto */
+  align-items: start !important;
+  column-gap: 12px !important;
+  row-gap: 6px !important;
+  padding: 10px 12px !important;     /* ↑ más colchón */
+  margin: 10px 0 !important;
+  font-size: clamp(1rem, 3.6vw, 1.06rem) !important;
+  line-height: 1.6 !important;       /* ↑ más legible */
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere !important;
+}
+.routine-section input[type="radio"]{
+  width: 22px !important; height: 22px !important;
+  margin-top: 2px !important;
+  flex-shrink: 0 !important;
+}
+
+/* 3) Resultado verde (Detox completo): menos vacío y título más pequeño */
+.success-celebration{
+  padding: 22px 16px !important;     /* ↓ menos espacio interior */
+  border-radius: 16px !important;
+}
+.celebration-icon{ font-size: 3rem !important; margin-bottom: 10px !important; }
+.success-celebration h3{
+  font-size: clamp(1.25rem, 5vw, 1.55rem) !important; /* ↓ tamaño del título */
+  line-height: 1.35 !important;
+  margin: 6px 0 10px !important;
+}
+.success-celebration .analogy-box{
+  padding: 14px !important;
+  border-width: 2px !important;
+}
+
+/* 4) Ajustes finos de la “rutina personalizada” (cuadro de salida) */
+#personalRoutine.custom-routine{
+  padding: 14px 12px !important;
+  font-size: clamp(0.98rem, 3.3vw, 1.06rem) !important;
+  line-height: 1.6 !important;
+}
+#personalRoutine p{ margin: 6px 0 !important; }
+
+/* 5) En móviles pequeños rematamos }
+@media (max-width: 600px){
+  .content{ padding: 16px !important; }
+  .transformation-journey{ gap: 12px !important; }
+  .journey-day{ padding: 10px 12px !important; min-height: 100px !important; }
+  .journey-day .day-icon{ font-size: 1.8rem !important; }
+  .journey-day .day-title{ font-size: 1.1rem !important; }
+  .success-celebration{ padding: 18px 14px !important; }
+}
+
+/* === FIX fuerte para las opciones del cuestionario en iOS === */
+.routine-section label{
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;           /* permite que el texto baje a otra línea */
+  width: 100% !important;
+  padding: 10px 12px !important;
+  margin: 10px 0 !important;
+  line-height: 1.55 !important;
+  font-size: clamp(1rem, 3.6vw, 1.08rem) !important;
+
+  /* anula cortes agresivos que provocan letras en columna */
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  hyphens: auto !important;
+}
+
+.routine-section label input[type="radio"]{
+  flex: 0 0 22px !important;            /* columna fija para el radio */
+  width: 22px !important;
+  height: 22px !important;
+  margin-top: 2px !important;
+}
+
+/* Título en negrita en su propia fila, el resto debajo con todo el ancho */
+.routine-section label strong{
+  flex: 0 0 100% !important;            /* ocupa la fila completa */
+  margin-bottom: 2px !important;
+}
+
+/* Asegura que cualquier otro nodo dentro del label pueda usar todo el ancho */
+.routine-section label *{
+  max-width: 100% !important;
+}
+
+/* Un poco más de aire en móvil pequeño */
+@media (max-width: 600px){
+  .routine-section label{ padding: 12px !important; line-height: 1.6 !important; }
+}
+
+/* ===== Ajuste definitivo de los cuadros de los días ===== */
+.transformation-journey {
+  gap: 10px !important;              /* menos espacio entre cuadros */
+}
+
+.journey-day {
+  padding: 10px 8px !important;      /* menos espacio interno */
+  min-height: auto !important;       /* que no obligue a altura grande */
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem) !important;
+}
+
+.journey-day .day-icon {
+  font-size: 1.6em !important;       /* iconos un poco más chicos */
+  margin-bottom: 6px !important;     
+}
+
+.journey-day .day-title {
+  font-size: clamp(1rem, 3vw, 1.3rem) !important; 
+  margin: 2px 0 !important;
+}
+
+/* En móvil más compacto todavía */
+@media (max-width: 600px) {
+  .journey-day {
+    padding: 8px 6px !important;
+    font-size: 1rem !important;
+  }
+  .journey-day .day-icon {
+    font-size: 1.4em !important;
+  }
+}
+
+/* ===== Forzar tamaño de letras dentro de los cuadros de los días ===== */
+.journey-day {
+  padding: 10px 8px !important;
+  min-height: auto !important;
+}
+
+.journey-day .day-title,
+.journey-day div {
+  font-size: clamp(1rem, 2.8vw, 1.25rem) !important; /* letras más grandes */
+  line-height: 1.35 !important;                      /* más aire */
+}
+
+.journey-day .day-icon {
+  font-size: 1.6em !important;   /* icono un poco más chico */
+  margin-bottom: 6px !important;
+}
+
+/* En móvil */
+@media (max-width: 600px) {
+  .journey-day .day-title,
+  .journey-day div {
+    font-size: 1.05rem !important; /* asegura que crezca en pantallas chicas */
+  }
+}
+
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+           <h1>🛡️ Día 5: Consolidación</p><p></p>Neurológica</h1>
+            <p>Tu Sistema Anti-Sobrepensamiento</p>
+            
+            <div class="audio-controls">
+                  <!-- Portada del audio -->
+<img src="5diaportada.jpeg" 
+     alt="Portada Día 5" 
+     style="max-width:250px; border-radius:12px; margin:1rem auto; display:block;">
+
+<!-- Reproductor de audio -->
+<audio controls preload="metadata" style="width:100%; max-width:500px; margin: 1rem auto; display:block;">
+  <source src="5diaaudio.MP3" type="audio/mpeg">
+  Tu navegador no soporta la reproducción de audio.
+</audio>
+
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="completion-visual">
+                <h2 style="font-size: 2.0em; margin-bottom: 35px;">🎯 Tu Transformación Completa en 5 Días</h2>
+                <div class="transformation-journey">
+                    <div class="journey-day day-1">
+                        <div class="day-icon">🔍</div>
+                        <div class="day-title">Día 1</div>
+                        <div>Identificaste tu patrón específico</div>
+                    </div>
+                    <div class="journey-day day-2">
+                        <div class="day-icon">⚡</div>
+                        <div class="day-title">Día 2</div>
+                        <div>Cortar bucles en 90 segundos</div>
+                    </div>
+                    <div class="journey-day day-3">
+                        <div class="day-icon">🧹</div>
+                        <div class="day-title">Día 3</div>
+                        <div>Limpiaste sobrecarga mental</div>
+                    </div>
+                    <div class="journey-day day-4">
+                        <div class="day-icon">🎯</div>
+                        <div class="day-title">Día 4</div>
+                        <div>Rutina de pensamiento productivo</div>
+                    </div>
+                    <div class="journey-day day-5">
+                        <div class="day-icon">🛡️</div>
+                        <div class="day-title">Día 5</div>
+                        <div>Sistema permanente</div>
+                    </div>
+                </div>
+                <p style="font-size: 1.3em;"><strong>¡Felicitaciones!</strong> Has construido un sistema mental completo y poderoso en 5 días.</p>
+                <br>
+                <p style="font-size: 1.2em;">Pero aquí viene la pregunta crucial: <span class="highlight">¿Cómo mantienes todo esto funcionando para el resto de tu vida?</span></p>
+                <br>
+                <p style="font-size: 1.2em;">Hoy vas a crear <strong>tu sistema personal anti-sobrepensamiento que funciona automáticamente</strong>, sin esfuerzo consciente, las 24 horas del día.</p>
+            </div>
+
+            <div class="section-card problema">
+                <div class="section-title">⚠️ El Problema del Regreso: 80% Vuelve a Patrones Antiguos</div>
+                <div class="section-content">
+                    <p>Déjame compartir algo que he observado en mi práctica clínica durante años trabajando con personas que luchan contra el sobrepensamiento:</p>
+                    <br>
+                    <p><strong>Sin un sistema de mantenimiento estructurado, el 80% de las personas vuelven completamente a sus patrones antiguos en solo 3 a 4 semanas.</strong></p>
+                    <br>
+                    <p>¿Por qué sucede esto con tanta frecuencia?</p>
+                    
+                    <div class="analogy-box">
+                        <div class="analogy-title">🌲 Analogía: Senderos en el Bosque Mental</div>
+                        <p>Tu cerebro funciona exactamente como un sendero en el bosque. Los viejos patrones de sobrepensamiento son como <strong>un camino muy transitado durante años</strong> - profundo, bien marcado, y extremadamente fácil de seguir.</p>
+                        <br>
+                        <p>Los nuevos hábitos que has creado son como <strong>un sendero completamente nuevo</strong> - todavía frágil, todavía requiere atención consciente para mantenerlo despejado.</p>
+                        <br>
+                        <p>Si no "caminas" regularmente por ese sendero nuevo, si no lo mantienes activo, la naturaleza automáticamente lo cubre con maleza, con obstáculos, y tu mente, buscando el camino de menor resistencia, automáticamente regresa al camino viejo y familiar.</p>
+                    </div>
+                    
+                    <div class="neurobiology-box">
+                        <div class="neuro-title">🏠 Como Renovar una Casa</div>
+                        <p>Has creado nuevos hábitos mentales increíblemente efectivos, pero <strong>los antiguos patrones siguen ahí, esperando.</strong> Es exactamente como cuando renovas una casa: si no mantienes las mejoras, si no cuidas los detalles, todo gradualmente vuelve a deteriorarse hasta regresar al estado original.</p>
+                    </div>
+                    
+                    <p style="margin-top: 25px;"><strong>Por eso necesitas mantener tu "sendero mental" despejado con un protocolo diario específico y científicamente diseñado.</strong></p>
+                </div>
+            </div>
+
+            <div class="section-card sistema">
+                <div class="section-title">🛡️ Tres Elementos de Tu Sistema de Protección</div>
+                <div class="section-content">
+                    <p>En neurociencia clínica, después de décadas de investigación, hemos identificado que un sistema anti-sobrepensamiento efectivo necesita exactamente <strong>tres elementos funcionando en perfecta coordinación:</strong></p>
+                   
+                    
+                 <div class="system-components">
+    <div class="component-card">
+        <div class="component-icon">🎍</div>
+        <div class="component-title">DETECTOR TEMPRANO</div>
+        <p><strong>Es como cuando sientes que te va a dar hambre</strong> antes de que te dé el hambre feroz. Aprendes a reconocer las primeras señales de tu patrón de sobrepensamiento antes de que se convierta en una tormenta mental incontrolable.</p>
+    </div>
+    
+    <div class="component-card">
+        <div class="component-icon">🚗</div>
+        <div class="component-title">RESPUESTA RÁPIDA</div>
+        <p><strong>Como cuando automáticamente te pones el cinturón de seguridad</strong> al subir al auto. En el momento que detectas el patrón, inmediatamente aplicas la técnica correcta - es un reflejo automático, sin dudar.</p>
+    </div>
+    
+    <div class="component-card">
+        <div class="component-icon">🦷</div>
+        <div class="component-title">MANTENIMIENTO PREVENTIVO</div>
+        <p><strong>Como lavarse los dientes todos los días</strong> para no tener caries. Cuidas tus nuevos hábitos mentales antes de que se debiliten, no después de que ya están dañados.</p>
+    </div>
+</div>
+
+                    
+                    <div class="analogy-box">
+                        <div class="analogy-title">🧠 Por Qué Funciona</div>
+                        <p>Este sistema funciona de manera tan efectiva porque aprovecha exactamente cómo tu cerebro naturalmente forma, mantiene y automatiza hábitos. <strong>No luchamos contra la naturaleza de tu mente, sino que trabajamos con ella.</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card protocolo">
+                <div class="section-title">⏰ Tu Protocolo de 10 Minutos Diarios</div>
+                <div class="section-content">
+                    <p>Este protocolo diario está basado en los estudios más recientes de neuroplasticidad y rehabilitación cognitiva. La parte extraordinaria es que <strong>solo 10 minutos diarios mantienen completamente toda tu transformación:</strong></p>
+                    
+                    <div class="protocol-builder">
+                        <div class="protocol-title">🎯 Tu Sistema de Mantenimiento Mental</div>
+                        
+                        <div class="protocol-timeline">
+                            <div class="time-slot">MINUTOS 1-3<br>LIMPIEZA MENTAL</div>
+                            <div class="protocol-options">
+                                <div class="protocol-option" onclick="selectProtocol(this, 'limpieza', 'volcado')">
+                                    <div class="option-title">📝 Volcado Mental</div>
+                                    <p><strong>Como ordenar tu escritorio antes de trabajar.</strong> Escribes absolutamente todo lo que tienes en mente para despejarte completamente de toda la información acumulada.</p>
+                                </div>
+                                <div class="protocol-option" onclick="selectProtocol(this, 'limpieza', 'respiracion')">
+                                    <div class="option-title">💨 Respiración Profunda</div>
+                                    <p><strong>Para calmar tu sistema nervioso.</strong> Como hacer una pausa profunda y consciente antes de comenzar algo importante.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="protocol-timeline">
+                            <div class="time-slot">MINUTOS 4-7<br>FORTALECIMIENTO</div>
+                            <div class="protocol-options">
+                                <div class="protocol-option" onclick="selectProtocol(this, 'fortalecimiento', 'enfoque')">
+                                    <div class="option-title">🎯 Micro-Enfoque</div>
+                                    <p><strong>Como hacer ejercicio para mantener músculos fuertes.</strong> Elegir una tarea simple y específica y realizarla con atención completa y concentrada durante exactamente 4 minutos.</p>
+                                </div>
+                                <div class="protocol-option" onclick="selectProtocol(this, 'fortalecimiento', 'decision')">
+                                    <div class="option-title">⚖️ Micro-Decisión</div>
+                                    <p><strong>Resolver una decisión pequeña pendiente</strong> usando tu rutina completa de pensamiento productivo que aprendiste en el día 4.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="protocol-timeline">
+                            <div class="time-slot">MINUTOS 8-10<br>REFLEXIÓN</div>
+                            <div class="protocol-options">
+                                <div class="protocol-option" onclick="selectProtocol(this, 'consolidacion', 'revision')">
+                                    <div class="option-title">🌙 Revisión del Día</div>
+                                    <p><strong>Como revisar tu día antes de dormir.</strong> Simplemente piensas: "¿Hoy mi mente estuvo tranquila o agitada? ¿Qué me ayudó?"</p>
+                                </div>
+                                <div class="protocol-option" onclick="selectProtocol(this, 'consolidacion', 'gratitud')">
+                                    <div class="option-title">🙏 Gratitud por Claridad</div>
+                                    <p><strong>Agradecer tres momentos específicos</strong> donde te sentiste mentalmente clara y enfocada durante el día.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analogy-box">
+                        <div class="analogy-title">🏋️ Como Ir al Gimnasio</div>
+                        <p><strong>Es exactamente como ir al gimnasio:</strong> inversión mínima de tiempo, resultado máximo de beneficios, y la consistencia diaria es absolutamente todo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card rutina">
+                <div class="section-title">🔧 Diseña Tu Rutina Personal</div>
+                <div class="section-content">
+                    <div class="routine-builder">
+                        <div class="routine-title">🛠️ Constructor de Rutina Anti-Sobrepensamiento</div>
+                        
+                        <div class="routine-sections">
+                            <div class="routine-section">
+                                <h4>🌅 ¿CUÁNDO harás tu protocolo de 10 minutos?</h4>
+                                <label style="display: block; margin: 18px 0; font-size: 1.15em;">
+                                    <input type="radio" name="cuando" value="manana" style="margin-right: 15px; width: 20px; height: 20px;">
+                                    <strong>Mañana (6-9 AM):</strong> Preparas tu mente para el día, previenes sobrecarga
+                                </label>
+                                <label style="display: block; margin: 18px 0; font-size: 1.15em;">
+                                    <input type="radio" name="cuando" value="tarde" style="margin-right: 15px; width: 20px; height: 20px;">
+                                    <strong>Tarde (2-5 PM):</strong> Reset mental a mitad del día, cortas patrones acumulados
+                                </label>
+                                <label style="display: block; margin: 18px 0; font-size: 1.15em;">
+                                    <input type="radio" name="cuando" value="noche" style="margin-right: 15px; width: 20px; height: 20px;">
+                                    <strong>Noche (7-10 PM):</strong> Procesas el día, limpias tu mente antes de dormir
+                                </label>
+                            </div>
+
+                            <div class="routine-section">
+                                <h4>📍 ¿DÓNDE lo harás?</h4>
+                                <input type="text" id="donde" placeholder="Ej: En mi escritorio, en el sofá, caminando por el jardín..." style="width: 100%; padding: 18px; border-radius: 10px; border: 2px solid #ddd; font-size: 1.15em;">
+                            </div>
+
+                            <div class="routine-section">
+                                <h4>🔔 ¿QUE señal usarás para recordarlo?</h4>
+                                <label style="display: block; margin: 18px 0; font-size: 1.15em;">
+                                    <input type="radio" name="senal" value="alarma" style="margin-right: 15px; width: 20px; height: 20px;">
+                                    <strong>Alarma del teléfono</strong> con nombre específico
+                                </label>
+                                <label style="display: block; margin: 18px 0; font-size: 1.15em;">
+                                    <input type="radio" name="senal" value="habito" style="margin-right: 15px; width: 20px; height: 20px;">
+                                    <strong>Después de un hábito existente</strong> (café, ejercicio, comer)
+                                </label>
+                                <label style="display: block; margin: 18px 0; font-size: 1.15em;">
+                                    <input type="radio" name="senal" value="calendario" style="margin-right: 15px; width: 20px; height: 20px;">
+                                    <strong>Bloque en calendario</strong> como cita importante
+                                </label>
+                            </div>
+                        </div>
+
+                        <button onclick="generatePersonalRoutine()" class="btn btn-primary" style="width: 100%; margin-top: 35px; padding: 25px; font-size: 1.3em;">
+                            🛡️ Crear Mi Sistema Anti-Sobrepensamiento
+                        </button>
+
+
+
+                       <div id="personalRoutine" class="custom-routine">
+  <!-- La rutina generada se inyecta aquí por JS -->
+  <p style="font-size:1.1em; opacity:.8">Tu sistema personalizado aparecerá aquí…</p>
+</div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card mantenimiento">
+                <div class="section-title">🔄 Mantenimiento a Largo Plazo</div>
+                <div class="section-content">
+                    <p>Los estudios longitudinales nos muestran tres fases completamente predecibles en este proceso:</p>
+                    <br>
+                    
+                    <h4 style="color: #fd79a8; margin-bottom: 25px; font-size: 1.5em;">📅 SEMANAS 1-2: Instalación del Sistema</h4>
+                    <ul style="margin-left: 30px; line-height: 2.2;">
+                        <li style="margin-bottom: 10px;">Haces tu protocolo TODOS los días, sin ninguna excepción</li>
+                        <li style="margin-bottom: 10px;">Tu cerebro está literalmente "soldando" y fortaleciendo las nuevas conexiones neuronales</li>
+                        <li style="margin-bottom: 10px;">sMarca cada día completado para mantener la motivación</li>
+                    </ul>
+                    <br>
+                    
+                    <h4 style="color: #fd79a8; margin-bottom: 25px; font-size: 1.5em;">📅 SEMANAS 3-4: Automatización Natural</h4>
+                    <ul style="margin-left: 30px; line-height: 2.2;">
+                        <li style="margin-bottom: 10px;">El protocolo comienza a sentirse más natural, requiere menos esfuerzo consciente</li>
+                        <li style="margin-bottom: 10px;">Las nuevas rutas cerebrales se vuelven progresivamente más fuertes y dominantes</li>
+                        <li style="margin-bottom: 10px;">Puedes ajustar horarios pero mantén la consistencia diaria</li>
+                    </ul>
+                    <br>
+                    
+                    <h4 style="color: #fd79a8; margin-bottom: 25px; font-size: 1.5em;">📅 MES 2+: Piloto Automático Completo</h4>
+                    <ul style="margin-left: 30px; line-height: 2.2;">
+                        <li style="margin-bottom: 10px;">Tu mente detecta y corrige automáticamente cualquier patrón de sobrepensamiento</li>
+                        <li style="margin-bottom: 10px;">Tu claridad mental se convierte en tu estado natural y predeterminado</li>
+                        <li style="margin-bottom: 10px;">El sistema funciona sin esfuerzo consciente las 24 horas</li>
+                    </ul>
+                    
+                    <div class="analogy-box">
+                        <div class="analogy-title">🏋️ Analogía: Tu Mente como un Músculo</div>
+                        <p>Así como no puedes desarrollar músculos entrenando un solo día, <strong>no puedes mantener claridad mental sin ejercicio regular</strong>. Tu protocolo de 10 minutos es como ir al "gimnasio mental" - poco tiempo, máximo resultado, consistencia es clave.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-indicator">
+                <div class="progress-step completed">1</div>
+                <div class="progress-line completed"></div>
+                <div class="progress-step completed">2</div>
+                <div class="progress-line completed"></div>
+                <div class="progress-step completed">3</div>
+                <div class="progress-line completed"></div>
+
+  <div class="progress-step completed">4</div>
+                <div class="progress-line completed"></div>
+                <div class="progress-step active">5</div>
+
+            </div>
+
+            <div class="success-celebration">
+                <div class="celebration-icon">🎉</div>
+                <h3 style="font-size: 2.3em; margin-bottom: 25px;">¡Tu Detox Dopamínico Neurológico de 5 Días Está Oficialmente Completo!</h3>
+                <br>
+                <div style="text-align: left; max-width: 800px; margin: 0 auto; font-size: 1.2em;">
+                    <p style="margin-bottom: 12px;">✅ <strong>Día 1:</strong> Identificaste tu patrón específico de sobrepensamiento</p>
+                    <p style="margin-bottom: 12px;">✅ <strong>Día 2:</strong> Aprendiste a cortar bucles mentales en exactamente 90 segundos</p>
+                    <p style="margin-bottom: 12px;">✅ <strong>Día 3:</strong> Limpiaste toda la sobrecarga mental acumulada</p>
+                    <p style="margin-bottom: 12px;">✅ <strong>Día 4:</strong> Creaste tu rutina personal de enfoque para pensamiento productivo</p>
+                    <p style="margin-bottom: 12px;">✅ <strong>Día 5:</strong> Diseñaste tu sistema personal anti-sobrepensamiento permanente</p>
+                </div>
+                <br>
+                <div class="analogy-box" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: white; border: 3px solid rgba(255,255,255,0.3);">
+                    <div class="analogy-title" style="color: white; font-size: 1.6em;">🏆 Has Creado Algo Verdaderamente Extraordinario</div>
+                    <div style="color: rgba(255,255,255,0.95); font-size: 1.2em;">
+                        <p><strong>Una mente que funciona consistentemente PARA ti, no CONTRA ti.</strong></p>
+                        <br>
+                        <p>Ahora posees tu sistema personal de 10 minutos que mantiene tu claridad mental funcionando automáticamente durante las próximas semanas, meses y años.</p>
+                    </div>
+                </div>
+                <br>
+                <p style="font-size: 1.5em; font-weight: bold;">Comienza tu protocolo HOY mismo. Tu mente completamente transformada te está esperando.</p>
+            </div>
+
+            <div class="analogy-box" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); color: white; border: none; padding: 45px;">
+                <div class="analogy-title" style="color: white; font-size: 1.7em;">🌟 Tu Nueva Realidad Mental</div>
+                <p style="font-size: 1.2em;">Tu mente ahora es como <strong>una casa completamente renovada y organizada</strong>:</p>
+                <br>
+                <div style="text-align: left; font-size: 1.2em;">
+                    <p style="margin-bottom: 15px;">🏠 <strong>Estructura sólida:</strong> Sistema de 3 elementos que funciona automáticamente</p>
+                    <p style="margin-bottom: 15px;">🧹 <strong>Limpieza diaria:</strong> Protocolo de 10 minutos que mantiene todo en orden</p>
+                    <p style="margin-bottom: 15px;">🔔 <strong>Sistema de alarmas:</strong> Detectas problemas antes de que se agraven</p>
+                    <p style="margin-bottom: 15px;">🛠️ <strong>Mantenimiento preventivo:</strong> Cuidas tu mente antes de que se deteriore</p>
+                    <p style="margin-bottom: 15px;">🎯 <strong>Funcionamiento eficiente:</strong> Cada pensamiento tiene su lugar y propósito</p>
+                </div>
+                <br>
+                <p style="font-size: 1.3em;"><strong>¡Disfruta vivir en tu mente renovada y organizada!</strong></p>
+            </div>
+              <br>
+             <div class="final-message">
+  Tu MENTE es poderosa y TÚ tienes el CONTROL
+</div>
+</div>
+
+        </div>
+    </div>
+
+    <script>
+        let speech = null;
+        let isPaused = false;
+        let protocolSelections = {
+            limpieza: null,
+            fortalecimiento: null,
+            consolidacion: null
+        };
+
+        function getTextContent() {
+            const content = document.querySelector('.content');
+            let text = content.innerText;
+            
+            text = text.replace(/🛡️|🎯|⚠️|🧠|🎍|🚗|🦷|⏰|🔧|🏋️|🎉|🌟|🏠|🧹|🔔|🛠️|🔍|⚡|🧹|🎯|🛡️|🌲|🏠|📝|💨|⚖️|🌙|🙏|✅|🏆|📅|🌅|📍|🔔/g, '');
+            text = text.replace(/•/g, '');
+            text = text.replace(/\n+/g, '. ');
+            text = text.replace(/MINUTOS \d+-\d+:/g, 'Paso:');
+            
+            return text;
+        }
+
+        document.getElementById('playButton').addEventListener('click', function() {
+            if ('speechSynthesis' in window) {
+                if (isPaused && speech) {
+                    window.speechSynthesis.resume();
+                    isPaused = false;
+                } else {
+                    window.speechSynthesis.cancel();
+                    
+                    speech = new SpeechSynthesisUtterance(getTextContent());
+                    speech.lang = 'es-ES';
+                    speech.rate = 0.9;
+                    speech.pitch = 1;
+                    speech.volume = 1;
+                    
+                    speech.onstart = function() {
+                        document.getElementById('playButton').style.display = 'none';
+                        document.getElementById('pauseButton').style.display = 'inline-block';
+                    };
+                    
+                    speech.onend = function() {
+                        document.getElementById('playButton').style.display = 'inline-block';
+                        document.getElementById('pauseButton').style.display = 'none';
+                        document.getElementById('playButton').innerHTML = '🎧 Escuchar Audio';
+                        isPaused = false;
+                    };
+                    
+                    window.speechSynthesis.speak(speech);
+                }
+                
+                document.getElementById('playButton').innerHTML = '▶️ Continuar';
+            } else {
+                alert('Tu navegador no soporta la función de audio. Puedes leer el contenido normalmente.');
+            }
+        });
+
+        document.getElementById('pauseButton').addEventListener('click', function() {
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.pause();
+                isPaused = true;
+                document.getElementById('playButton').style.display = 'inline-block';
+                document.getElementById('pauseButton').style.display = 'none';
+                document.getElementById('playButton').innerHTML = '▶️ Continuar';
+            }
+        });
+
+        function selectProtocol(element, category, value) {
+            document.querySelectorAll(`.protocol-timeline`).forEach(timeline => {
+                timeline.querySelectorAll('.protocol-option').forEach(option => {
+                    if (option.closest('.protocol-timeline') === element.closest('.protocol-timeline')) {
+                        option.classList.remove('selected');
+                    }
+                });
+            });
+            
+            element.classList.add('selected');
+            protocolSelections[category] = value;
+        }
+
+        function generatePersonalRoutine(){
+  const cuando = document.querySelector('input[name="cuando"]:checked');
+  const donde = document.getElementById('donde').value;
+  const senal = document.querySelector('input[name="senal"]:checked');
+
+  if (!cuando || !donde.trim() || !senal){
+    alert('Por favor completa todas las selecciones para crear tu rutina personalizada.');
+    return;
+  }
+  if (!protocolSelections.limpieza || !protocolSelections.fortalecimiento || !protocolSelections.consolidacion){
+    alert('Selecciona una opción para cada fase del protocolo (Limpieza, Fortalecimiento, Reflexión).');
+    return;
+  }
+
+  const cuandoTexts = {
+    manana: 'cada mañana entre 6‑9 AM',
+    tarde : 'cada tarde entre 2‑5 PM',
+    noche : 'cada noche entre 7‑10 PM'
+  };
+  const senalTexts = {
+    alarma   : 'una alarma en tu teléfono',
+    habito   : 'después de un hábito existente',
+    calendario: 'un bloque fijo en tu calendario'
+  };
+  const protocolTexts = {
+    volcado     : 'Volcado Mental — Escribir todo lo que tienes en mente (3 min)',
+    respiracion : 'Respiración Profunda — Calmar el sistema nervioso (3 min)',
+    enfoque     : 'Micro‑Enfoque — Tarea simple con atención completa (4 min)',
+    decision    : 'Micro‑Decisión — Resolver decisión pendiente (4 min)',
+    revision    : 'Revisión del Día — Reflexionar sobre tu estado mental (3 min)',
+    gratitud    : 'Gratitud por Claridad — Agradecer momentos de claridad (3 min)'
+  };
+
+  const html = `
+    <section class="routine-output">
+      <div class="routine-grid">
+        <div class="routine-badge">
+          <span class="emoji">🛡️</span>
+          <div>
+            <div>Tu Sistema</div>
+            <div>Anti‑Sobrepensamiento</div>
+          </div>
+        </div>
+
+        <div class="routine-list">
+          <div class="routine-item">
+            <div class="tag">CUÁNDO</div>
+            <div>${cuandoTexts[cuando.value]}</div>
+          </div>
+          <div class="routine-item">
+            <div class="tag">DÓNDE</div>
+            <div>${donde.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+          </div>
+          <div class="routine-item">
+            <div class="tag">SEÑAL</div>
+            <div>${senalTexts[senal.value]}</div>
+          </div>
+          <div class="routine-item">
+            <div class="tag">1‑3</div>
+            <div>${protocolTexts[protocolSelections.limpieza]}</div>
+          </div>
+          <div class="routine-item">
+            <div class="tag">4‑7</div>
+            <div>${protocolTexts[protocolSelections.fortalecimiento]}</div>
+          </div>
+          <div class="routine-item">
+            <div class="tag">8‑10</div>
+            <div>${protocolTexts[protocolSelections.consolidacion]}</div>
+          </div>
+        </div>
+
+        <aside class="routine-note">
+          ¡Guárdalo y úsalo a diario!
+        </aside>
+      </div>
+    </section>
+  `;
+
+  const box = document.getElementById('personalRoutine');
+  box.classList.add('filled');
+  box.innerHTML = html;
+  box.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+        window.addEventListener('beforeunload', function() {
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio 2: Técnica de 90 Segundos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 95%;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 50px 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="circuit" patternUnits="userSpaceOnUse" width="30" height="30"><circle cx="15" cy="15" r="2" fill="rgba(255,255,255,0.1)"/><line x1="15" y1="15" x2="25" y2="15" stroke="rgba(255,255,255,0.1)" stroke-width="1"/><line x1="15" y1="15" x2="15" y2="25" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23circuit)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 25px;
+        }
+
+        .audio-controls {
+            margin-top: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+
+        .content {
+            padding: 60px 80px;
+        }
+
+        .technique-visual {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .technique-visual h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+
+        .technique-visual p {
+            font-size: 1.2em;
+            line-height: 1.8;
+        }
+
+        .timer-circle {
+            width: 150px;
+            height: 150px;
+            border: 10px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            margin: 30px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            font-weight: bold;
+            color: #2c3e50;
+            position: relative;
+            animation: rotate 90s linear infinite;
+        }
+
+        .timer-circle::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 10px solid transparent;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: timer-progress 90s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes timer-progress {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 35px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border-left: 6px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .ciencia { border-left-color: #667eea; }
+        .tecnica { border-left-color: #4ecdc4; }
+        .practica { border-left-color: #ff6b6b; }
+        .implementacion { border-left-color: #96ceb4; }
+        .personalizacion { border-left-color: #feca57; }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .section-content {
+            color: #555;
+            line-height: 1.9;
+            font-size: 1.2em;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .step-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 280px;
+        }
+
+        .step-number {
+            font-size: 4em;
+            font-weight: bold;
+            opacity: 0.2;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .step-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-duration {
+            background: rgba(255,255,255,0.25);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1em;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .step-content {
+            position: relative;
+            z-index: 1;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .practice-section {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .practice-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 25px;
+        }
+
+        .practice-button {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .practice-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .practice-instructions {
+            background: rgba(255,255,255,0.8);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 25px 0;
+            display: none;
+            font-size: 1.1em;
+        }
+
+        .practice-instructions.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #feca57 0%, #ff9ff3 100%);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .pattern-specific {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .pattern-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            border: 3px solid;
+            transition: transform 0.3s ease;
+        }
+
+        .pattern-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pattern-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .pattern-card p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .input-pattern { border-color: #ff6b6b; }
+        .decision-pattern { border-color: #4ecdc4; }
+        .social-pattern { border-color: #667eea; }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px 0;
+        }
+
+        .progress-step {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 0 15px;
+            position: relative;
+        }
+
+        .progress-step.active {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .progress-step.completed {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+        }
+
+        .progress-line {
+            height: 4px;
+            width: 80px;
+            background: #ddd;
+            margin: 0 5px;
+        }
+
+        .progress-line.completed {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        }
+
+        .dopamine-loop {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .loop-element {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            margin: 0 15px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .thought {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+        }
+
+        .dopamine {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            animation-delay: 1s;
+        }
+
+        .arrow {
+            font-size: 2.5em;
+            color: #666;
+            animation: flow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        @keyframes flow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+            display: none;
+            font-size: 1.2em;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: successFade 0.5s ease;
+        }
+
+        @keyframes successFade {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .important-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 5px solid #f39c12;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .important-box strong {
+            color: #d68910;
+        }
+
+        ol, ul {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        ol li, ul li {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+ @media (max-width: 1200px) {
+            .container {
+                width: 98%;
+            }
+            
+            .content {
+                padding: 40px 50px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .header p {
+                font-size: 1.1em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .brain-center {
+                width: 120px;
+                height: 120px;
+                font-size: 3em;
+            }
+            
+            .thought-bubble {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5em;
+            }
+            
+            .progress-step {
+                width: 40px;
+                height: 40px;
+                margin: 0 8px;
+                font-size: 1em;
+            }
+            
+            .progress-line {
+                width: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 15px 25px;
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 1.4em;
+            }
+            
+            .section-content {
+                font-size: 1.1em;
+            }
+            
+            .progress-step {
+                width: 35px;
+                height: 35px;
+                margin: 0 5px;
+                font-size: 0.9em;
+            }
+            
+            .progress-line {
+                width: 25px;
+            }
+        }
+   /* --- Ajustes móviles y tipografía fluida --- */
+html {
+  /* Evita que iOS reescale el texto */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  /* Tamaño base fluido para todo el sitio */
+  font-size: clamp(0.95rem, 2.6vw, 1.05rem);
+  line-height: 1.6;
+}
+
+/* Títulos fluidos */
+.header h1 {
+  font-size: clamp(1.4rem, 5.5vw, 2.2rem);
+  line-height: 1.2;
+}
+.section-title,
+.intro-section h2 {
+  font-size: clamp(1.1rem, 4.2vw, 1.6rem);
+  line-height: 1.3;
+}
+
+/* Párrafos y textos largos */
+.header p,
+.section-content,
+.intro-section p {
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+  line-height: 1.7;
+  overflow-wrap: anywhere; /* Evita desbordes por palabras largas */
+}
+
+/* Contenedores más “respirables” en móvil */
+.container { width: min(95%, 1200px); }
+.content { padding: clamp(1rem, 3.5vw, 2.5rem); }
+.header  { padding: clamp(1.2rem, 4vw, 3rem) clamp(1rem, 3.5vw, 2rem); }
+
+/* Imagen de portada y audio 100% ancho disponible */
+.header img,
+.content img,
+audio {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Botones cómodos en móvil */
+.btn {
+  font-size: clamp(0.95rem, 3.2vw, 1rem);
+  padding: clamp(0.6rem, 2.5vw, 1rem) clamp(0.9rem, 3vw, 2rem);
+}
+
+/* Ajustes extra para pantallas muy pequeñas */
+@media (max-width: 420px) {
+  .header p[style] { font-size: inherit !important; } /* neutraliza inline grandes */
+  .intro-section { padding: 1rem; }
+  .stats-grid, .section-card { padding: 1rem; }
+}
+
+/* Opcional: si los emojis agrandan el renglón, limítalo un poquito */
+h1, h2 { white-space: normal; }
+ /* --- Ancho real en móvil (parche anti-estrecho) --- */
+@media (max-width: 600px) {
+  /* usa todo el ancho de la pantalla */
+  .container { max-width: 100vw; width: 100%; margin: 0; border-radius: 0; }
+
+  /* menos margen lateral */
+  .header { padding: 1.25rem 1rem; }
+  .content { padding: 1rem; }
+
+  /* las tarjetas a ancho completo */
+  .intro-section,
+  .section-card,
+  .stats-grid { margin: 0; padding: 1rem; width: 100%; max-width: none; }
+
+  /* evita anchos fijos heredados */
+  .stats-grid,
+  .quiz-section,
+  .quiz-question,
+  .quiz-options,
+  .quiz-option,
+  .stat-card { width: 100% !important; max-width: none !important; }
+
+  /* imágenes y audio sin recorte */
+  img, audio { max-width: 100%; height: auto; display: block; }
+
+  /* gutters laterales mínimos */
+  .intro-section, .section-card { margin-inline: 0; }
+}
+
+/* si algún bloque tenía un ancho duro en desktop, desactívalo en móvil extremo */
+@media (max-width: 420px) {
+  [style*="width:"], [class*="width"], [class*="max-width"] { max-width: 100% !important; }
+}
+/* ===== Quiz: tipografía y layout fluidos ===== */
+
+/* Desktop/tablet: un poco más compacto ya */
+.quiz-section .quiz-option {
+  /* por qué: evitar que el texto “inflé” el botón */
+  font-size: clamp(0.98rem, 1.6vw, 1.05rem);
+  line-height: 1.55;
+  padding: clamp(0.9rem, 1.6vw, 1.15rem) clamp(1rem, 2vw, 1.4rem);
+}
+
+/* Título de bloque del quiz */
+.quiz-section .quiz-title {
+  font-size: clamp(1.05rem, 2.6vw, 1.25rem);
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+}
+
+/* Contenedor: sin anchos fijos */
+.quiz-section,
+.quiz-question,
+.quiz-options {
+  width: 100%;
+  max-width: none;
+}
+
+/* Separación uniforme entre opciones */
+.quiz-options {
+  display: grid;
+  gap: 12px;
+}
+
+/* MÓVIL: reducir más para que “respire” y no se vea estrecho */
+@media (max-width: 600px) {
+  .quiz-section .quiz-option {
+    font-size: clamp(0.94rem, 3.5vw, 1rem);
+    line-height: 1.5;
+    padding: clamp(0.75rem, 3.2vw, 0.95rem) clamp(0.9rem, 4vw, 1.1rem);
+    border-radius: 12px;           /* menos curva = más espacio útil */
+    margin: 0;                     /* sin márgenes laterales */
+  }
+
+  .quiz-section .quiz-title {
+    font-size: clamp(1rem, 3.8vw, 1.15rem);
+    margin-bottom: 0.6rem;
+  }
+
+  /* Asegura ancho completo y elimina “estrechez” por bordes/paddings altos */
+  .section-card.identificacion,
+  .quiz-section {
+    padding: 1rem;
+    margin-inline: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* MÓVIL PEQUEÑO extra */
+@media (max-width: 390px) {
+  .quiz-section .quiz-option {
+    font-size: 0.92rem;
+    padding: 0.7rem 0.9rem;
+  }
+}
+/* Ajustes para los 3 pasos en móvil */
+@media (max-width: 600px) {
+  .steps-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .step-card {
+    width: 90%;
+    max-width: 300px;
+    height: auto;          /* que no se alargue demasiado */
+    padding: 1rem;
+    border-radius: 15px;
+    text-align: center;    /* centra el texto */
+  }
+
+  .step-card h3 {
+    writing-mode: initial; /* vuelve el texto horizontal */
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+
+  .step-card p {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+}
+/* Layout de 3 pasos */
+.pasos-grid {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.paso-card {
+  flex: 1;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 18px;
+  font-weight: bold;
+}
+
+/* Responsive: en móvil se apilan mejor */
+@media (max-width: 600px) {
+  .pasos-grid {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .paso-card {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+}
+/* === Paso a paso (Stepper 90s) === */
+#pasos-90s{ max-width:900px; margin:16px auto; display:flex; flex-direction:column; gap:14px; }
+#pasos-90s .paso{
+  display:none;                       /* oculto por defecto */
+  background: linear-gradient(135deg,#ffe9d6,#fff5ee);
+  border-left:6px solid #ff6a3d;
+  border-radius:18px;
+  box-shadow:0 10px 24px rgba(0,0,0,.06);
+  padding:16px 14px;
+  transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+  opacity:.85;
+}
+#pasos-90s .paso.visible{             /* el paso activo */
+  display:block;
+  opacity:1;
+  box-shadow:0 16px 32px rgba(0,0,0,.08);
+}
+#pasos-90s h4{ margin:0 0 .5rem 0; font-size:1.35rem; line-height:1.25; }
+#pasos-90s p, #pasos-90s li{ font-size:1rem; line-height:1.55; }
+#pasos-90s ol, #pasos-90s ul{ margin:.35rem 0 0 1.25rem; }
+
+/* Botón grande reutilizando tu clase; sólo ajustes si hace falta */
+#pasos-90s .practice-button{
+  border:0; border-radius:16px;
+  padding:12px 18px;
+  background:linear-gradient(135deg,#ff6a3d,#ff3d6e);
+  color:#fff; font-weight:800; cursor:pointer;
+  box-shadow:0 10px 24px rgba(255,61,110,.25);
+  margin-top:12px;
+}
+#pasos-90s .practice-button:disabled{ opacity:.6; cursor:not-allowed; }
+
+/* Responsive */
+@media (max-width:600px){
+  #pasos-90s{ gap:12px; }
+  #pasos-90s h4{ font-size:1.2rem; }
+  #pasos-90s p, #pasos-90s li{ font-size:.98rem; line-height:1.5; }
+  #pasos-90s .practice-button{ font-size:1rem; padding:12px 16px; }
+}
+
+/* Más separación entre bloques */
+.practice-instructions {
+  margin: 25px 0;     /* espacio arriba y abajo */
+  padding: 20px;
+  border-radius: 15px;
+  background: #fff9f6;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Botones dentro de los pasos */
+.practice-instructions .practice-button {
+  margin-top: 20px;   /* separa botón del texto */
+  display: block;
+}
+
+/* Espaciado general entre secciones grandes */
+.section-card,
+.analogy-box,
+.phase-card {
+  margin-bottom: 35px;  /* aire entre bloques */
+}
+
+/* Opcional: línea divisoria suave entre secciones */
+.section-card:not(:last-child),
+.analogy-box:not(:last-child),
+.phase-card:not(:last-child) {
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  padding-bottom: 25px;
+}
+/* — Alineación fina dentro del stepper — */
+#pasos-90s .paso{
+  padding:16px 16px 16px 18px;       /* mismo respiro alrededor */
+  box-sizing:border-box;
+}
+
+/* Usa el mismo gutter para título, textos, listas y botón */
+#pasos-90s .paso h4,
+#pasos-90s .paso p,
+#pasos-90s .paso ol,
+#pasos-90s .paso ul,
+#pasos-90s .paso .practice-button{
+  margin-inline:12px;                 /* igual a ambos lados */
+}
+
+/* Lista: menos sangría y numeración clara */
+#pasos-90s .paso ol{
+  margin-left:0;                      /* quita el extra */
+  padding-left:1.1rem;                /* sangría justa para números */
+  list-style-position:outside;
+}
+#pasos-90s .paso li{
+  margin-bottom:.6rem;
+}
+#pasos-90s .paso li::marker{
+  color:#ff6a3d;                      /* mismo acento del borde */
+  font-weight:700;
+}
+
+/* Botón centrado y del mismo ancho visual */
+#pasos-90s .practice-button{
+  display:block;
+  margin:12px auto 0;                 /* centro horizontal */
+  max-width:420px;                    /* no más ancho que el texto */
+}
+
+/* Móvil: un pelín más compacto */
+@media (max-width:600px){
+  #pasos-90s .paso{ padding:14px 14px 14px 16px; }
+  #pasos-90s .paso h4{ text-align:center; }
+}
+
+/* ==== Audio 3: ajustes móviles finos ==== */
+@media (max-width: 600px) {
+  /* Tipografía más compacta */
+  .header h1 { font-size: clamp(1.2rem, 5.2vw, 1.6rem); line-height: 1.2; }
+  .header p  { font-size: clamp(.95rem, 3.6vw, 1.05rem); line-height: 1.5; }
+
+  .section-title,
+  .phase-title,
+  .analogy-title,
+  .neuroplasticity-visual h2 {
+    font-size: clamp(1.05rem, 4.4vw, 1.25rem);
+    line-height: 1.25;
+    margin-bottom: .5rem;
+  }
+
+  .section-content,
+  .phase-content,
+  .analogy-box p,
+  .timeline-item div,
+  .content p {
+    font-size: clamp(.95rem, 3.4vw, 1.02rem);
+    line-height: 1.5;           /* antes 1.6–1.7 -> más compacto */
+    margin-bottom: .65rem;
+  }
+
+  /* Menos aire en contenedores */
+  .content { padding: 16px; }
+  .phase-card, .analogy-box, .timeline { padding: 14px; margin-bottom: 12px; border-radius: 14px; }
+  .neuroplasticity-visual { padding: 16px; margin-bottom: 14px; border-radius: 14px; }
+
+  /* Cerebritos (neuronas) */
+  .brain-network {
+    display: flex;
+    flex-wrap: wrap;     /* permiten varias filas */
+    gap: 10px;           /* espacio coherente entre ellos */
+    justify-content: center;
+    margin: 10px 0;
+  }
+  .neuron {
+    width: 44px;         /* antes 60px */
+    height: 44px;
+    border-radius: 50%;
+    animation-duration: 2.4s;   /* más suave en móvil */
+  }
+  .neuron::before { font-size: 18px; } /* emoji más pequeño */
+
+  /* Línea animada más discreta en móvil */
+  .connection { height: 2px; opacity: .5; margin: 6px 0; }
+}
+
+/* Un pelín más apretado todavía en pantallas muy pequeñas */
+@media (max-width: 380px) {
+  .neuron { width: 40px; height: 40px; }
+  .content { padding: 14px; }
+  .phase-card, .analogy-box, .timeline { padding: 12px; }
+}
+
+/* Mensaje final destacado */
+.final-message {
+  margin: 2rem auto;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  font-size: clamp(1.2rem, 4vw, 1.5rem);
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #d4fc79, #96e6a1);
+  border-radius: 40px;
+  max-width: 650px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.final-message {
+  margin: 2rem auto;
+  padding: 1.2rem 1.8rem;
+  text-align: center;
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #d4b5f9, #9acdfd); /* lila pastel → celeste suave */
+  border-radius: 40px;
+  max-width: 650px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 18px rgba(190,170,255,0.4),
+              0 0 28px rgba(150,200,255,0.3); /* glow fijo */
+}
+
+/* ✨ Halo que se mueve */
+.final-message::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.6),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: shine 4s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0%   { left: -120%; }
+  50%  { left: 120%; }
+  100% { left: 120%; }
+}
+
+
+
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Día 2: Técnica de 90 Segundos</h1>
+            <p>Interrupción de Bucle Dopamínico</p>
+           
+            <div class="audio-controls">
+              <!-- Portada del audio -->
+<img src="2diaportada.jpeg" 
+     alt="Portada Día 2" 
+     style="max-width:250px; border-radius:12px; margin:1rem auto; display:block;">
+
+<!-- Reproductor de audio -->
+<audio controls preload="metadata" style="width:100%; max-width:500px; margin: 1rem auto; display:block;">
+  <source src="2diaaudio.MP3" type="audio/mpeg">
+  Tu navegador no soporta la reproducción de audio.
+</audio>
+
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="technique-visual">
+                <h2>🎯 Corta el Sobrepensamiento en 90 Segundos</h2>
+                <div class="timer-circle">90s</div>
+                <p><strong>Bienvenido al día 2.</strong> Ayer identificaste tu patrón específico de sobrepensamiento.</p>
+                <p>Hoy vas a aprender a <span class="highlight">cortarlo</span>.</p>
+                <p>Y sí, dije cortarlo. No gestionarlo, no reducirlo gradualmente. <strong>Cortarlo.</strong></p>
+            </div>
+
+            <div class="section-card ciencia">
+                <div class="section-title">🧠 La Neurociencia del Bucle Mental</div>
+                <div class="section-content">
+                    <p>Lo que vas a escuchar puede sonar demasiado simple. <strong>Esa es precisamente la razón por la que funciona.</strong></p>
+                    
+                    <p>Primero, necesitas entender qué pasa en tu cerebro cuando no puedes parar un pensamiento.</p>
+                    
+                    <div class="important-box">
+                        <p><strong>Tu mente no está "pensando demasiado".</strong> Está atrapada en lo que los neurocientíficos llamamos un "bucle de retroalimentación dopamínica".</p>
+                    </div>
+                    
+                    <div class="dopamine-loop">
+                        <div class="loop-element thought">💭</div>
+                        <div class="arrow">→</div>
+                        <div class="loop-element dopamine">⚡</div>
+                        <div class="arrow">→</div>
+                        <div class="loop-element thought">💭</div>
+                        <div class="arrow">→</div>
+                        <div style="font-size: 2em; color: #666;">♾️</div>
+                    </div>
+                    
+                    <p>Es como un disco rayado. El pensamiento activa dopamina, la dopamina refuerza el pensamiento, el pensamiento se repite, más dopamina, más repetición. <strong>Una y otra vez.</strong></p>
+                    
+                    <p>Las técnicas tradicionales fallan porque intentan "pensar diferente" o "relajarse". Pero no puedes usar el mismo sistema que está atascado para desatascarse.</p>
+                    
+                    <p><span class="highlight">Necesitas una interrupción neurológica. Un reset del circuito.</span></p>
+                </div>
+            </div>
+
+            <div class="section-card tecnica">
+                <div class="section-title">🔧 La Técnica: 3 Pasos Exactos</div>
+                <div class="section-content">
+                    <p>La técnica tiene <strong>3 pasos exactos</strong>. Los voy a explicar primero, después hacemos una práctica guiada juntos.</p>
+                    
+                    <div class="steps-container">
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <div class="step-title">DETECCIÓN</div>
+                            <div class="step-duration">10 segundos</div>
+                            <div class="step-content">
+                                <p>Cuando notes que tu mente está en bucle, di mentalmente:</p>
+                                <p><strong>"Bucle detectado"</strong></p>
+                                <p>Solo eso. No "otra vez estoy pensando demasiado" o "tengo que parar esto".</p>
+                                <p>Solo: <strong>"Bucle detectado"</strong></p>
+                            </div>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <div class="step-title">CORTE FÍSICO</div>
+                            <div class="step-duration">20 segundos</div>
+                            <div class="step-content">
+                                <p><strong>Inmediatamente haces una acción física específica:</strong></p>
+                                <p>• <strong>Opción 1:</strong> Cuenta hacia atrás desde 20 tocando cada dedo</p>
+                                <p>• <strong>Opción 2:</strong> 4 respiraciones profundas con palmas juntas</p>
+                                <p>• <strong>Opción 3:</strong> Camina 10 pasos contando en voz alta</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <div class="step-title">REDIRECCIÓN</div>
+                            <div class="step-duration">60 segundos</div>
+                            <div class="step-content">
+                                <p><strong>Dale una tarea específica a tu sistema sensorial:</strong></p>
+                                <p><strong>5</strong> objetos que veas</p>
+                                <p><strong>4</strong> sonidos que escuches</p>
+                                <p><strong>3</strong> texturas que toques</p>
+                                <p><strong>2</strong> olores que detectes</p>
+                                <p><strong>1</strong> sabor en tu boca</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="important-box">
+                        <p><strong>Esto no es meditación. Es neurociencia aplicada.</strong></p>
+                        <p>Estás forzando a tu cerebro a procesar información sensorial nueva, lo que rompe el bucle dopamínico automáticamente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card practica">
+                <div class="section-title">🎯 Práctica Guiada Interactiva</div>
+                <div class="section-content">
+                    <p>Ahora vamos a practicarlo juntos. Quiero que pienses en algo que normalmente te genera sobrepensamiento. No algo traumático, solo algo que te da vueltas. Una decisión pendiente, una preocupación, lo que sea.</p>
+                    
+                    <div class="practice-section">
+                        <div class="practice-title">🧘 Ejercicio Práctico - Hazlo Ahora</div>
+                        <p style="font-size: 1.2em; margin-bottom: 30px;">¿Ya lo tienes? Perfecto. Nota cómo tu mente quiere empezar a darle vueltas. Ahí está el bucle formándose.</p>
+                        
+                       <section id="pasos-90s" aria-label="Técnica de 90 segundos">
+
+  <!-- PASO 1 -->
+  <article class="paso visible" id="paso1">
+    <h4>🎯 PASO 1: DETECCIÓN</h4>
+    <p>Ahora, di mentalmente: <strong>"Bucle detectado"</strong></p>
+    <button class="practice-button next-btn" data-next="paso2">
+      ✅ Listo - Continuar con Paso 2
+    </button>
+  </article>
+
+  <!-- PASO 2 -->
+  <article class="paso" id="paso2">
+    <h4>💨 PASO 2: CORTE FÍSICO</h4>
+    <p>Vamos a hacer la respiración con palmas:</p>
+    <p><strong>Pon tus palmas juntas frente a tu pecho, presiona ligeramente.</strong></p>
+    <ol style="text-align: left; margin: 25px auto; max-width: 500px;">
+      <li>Inhala profundo por 4 segundos... mantén 2... exhala lento por 6...</li>
+      <li>Una más: inhala profundo por 4... mantén 2... exhala por 6...</li>
+      <li>Perfecto. Continúa así dos veces más por tu cuenta.</li>
+    </ol>
+    <button class="practice-button next-btn" data-next="paso3">
+      ✅ Listo - Continuar con Paso 3
+    </button>
+  </article>
+
+  <!-- PASO 3 -->
+  <article class="paso" id="paso3">
+    <h4>🌟 PASO 3: REDIRECCIÓN SENSORIAL</h4>
+    <p>Ahora la redirección sensorial. Nombra:</p>
+    <ol style="text-align: left; margin: 25px auto; max-width: 500px;">
+      <li><strong>5 cosas que puedas ver</strong> ahora mismo. Míralas realmente...</li>
+      <li><strong>4 sonidos</strong> que escuches en este momento...</li>
+      <li><strong>3 texturas</strong> que puedas tocar...</li>
+      <li><strong>2 olores</strong> que detectes...</li>
+      <li><strong>1 sabor</strong> en tu boca...</li>
+    </ol>
+    <button class="practice-button next-btn" data-next="fin">
+      ✅ He Completado el Ejercicio
+    </button>
+  </article>
+
+  <!-- Mensaje final -->
+  <article class="paso" id="fin">
+    <h4>🏆 ¡Ejercicio Completado!</h4>
+    <p>Has aplicado la técnica completa de 90 segundos.</p>
+  </article>
+
+</section>
+
+                        
+                        <div id="successMessage" class="success-message">
+                            <h4 style="font-size: 1.8em; margin-bottom: 20px;">🎉 ¡Excelente!</h4>
+                            <p><strong>¿Notas algo?</strong></p>
+                            <p>El pensamiento original ya no está dando vueltas en tu mente.</p>
+                            <p>Puede que todavía esté ahí, pero ya no tiene esa energía repetitiva e incontrolable.</p>
+                            <p style="margin-top: 20px;"><span class="highlight">Eso es neuroplasticidad en acción.</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card implementacion">
+                <div class="section-title">🚀 Implementación en las Próximas 24 Horas</div>
+                <div class="section-content">
+                    <p><strong>Esta técnica funciona mejor mientras más la uses.</strong> Tu cerebro necesita crear nuevos circuitos neurológicos, y eso requiere repetición.</p>
+                    
+                    <p>Durante las próximas 24 horas, quiero que uses esta técnica <span class="highlight">cada vez que detectes un bucle mental</span>. No importa dónde estés. En una reunión, hablando con alguien, en el baño, donde sea.</p>
+                    
+                    <ul>
+                        <li><strong>La detección</strong> puedes hacerla mentalmente. Nadie lo notará.</li>
+                        <li><strong>El corte físico</strong> puede ser discreto - la respiración con palmas nadie la va a notar.</li>
+                        <li><strong>La redirección</strong> la haces con lo que tengas alrededor.</li>
+                    </ul>
+                    
+                    <div class="important-box">
+                        <p><strong>Algo importante:</strong> Los primeros bucles que cortes van a intentar volver. Es normal. Tu cerebro está acostumbrado a esos patrones.</p>
+                        <p>Solo repite la técnica. Después de 3-4 interrupciones, el bucle se desactiva completamente.</p>
+                    </div>
+                </div>
+            </div>
+
+           <!-- Reemplaza SOLO esta sección de “Adaptación Según Tu Patrón” -->
+<section class="section-card adaptacion">
+  <div class="section-title">🎯 Adaptación Según Tu Patrón</div>
+  <div class="section-content">
+    <p>Existen <strong>3 patrones base</strong>. Si te identificas con <strong>2 o más</strong>, usa <strong>Multifactorial</strong> (mezcla de ajustes).</p>
+  </div>
+
+  <div class="pattern-grid">
+    <!-- 1) Sobrecarga de Input -->
+    <article class="pattern-card border-red">
+      <h4>🔴 Sobrecarga de Input</h4>
+      <p>Úsalo especialmente <strong>después de consumir</strong> noticias, redes o mucha información.</br>
+     </br> <strong>Momento clave:</strong> justo al cerrar apps o navegador.</br>
+     </br> <strong>Señal de alerta:</strong> tu mente salta entre muchos temas a la vez.</p>
+    </article>
+
+    <!-- 2) Bucle de Indecisión -->
+    <article class="pattern-card border-yellow">
+      <h4>🟡 Bucle de Indecisión</h4>
+      <p>Aplica cuando te sorprendas <strong>analizando lo mismo</strong> por tercera vez.</br>
+     </br> <strong>Momento clave:</strong> al quedarte atascado eligiendo.</br>
+     </br> <strong>Señal de alerta:</strong> repites pros y contras sin avanzar.</p>
+    </article>
+
+    <!-- 3) Hiperactivación Social -->
+    <article class="pattern-card border-blue">
+      <h4>🔵 Hiperactivación Social</h4>
+      <p>Úsalo tras <strong>interacciones sociales intensas</strong> o al quedarte solo luego de estar con gente.</br>
+      </br> <strong>Momento clave:</strong> primeros 10 minutos post‑interacción.</br>
+     </br> <strong>Señal de alerta:</strong> replay de conversaciones y “¿por qué dije…?”.</p>
+    </article>
+
+    <!-- 4) Multifactorial -->
+     <article class="pattern-card border-purple">
+    <h4>🟣 Multifactorial</h4>
+    <p>Si se mezclan 2+ patrones, haz el Protocolo Base y añade un ajuste del patrón dominante.<p>
+    <strong>Base (90s):</strong> STOP → CORTE → RESET.<p>
+    <strong>+ Input:</strong> 2 min sin pantallas + respiración 4-6.<p>
+    <strong>+ Indecisión:</strong> límite de 3 criterios y decide.<p>
+    <strong>+ Social:</strong> descarga de 3 frases y suelta.</p>
+     </article>
+  </div>
+</section>
+
+
+            <div class="progress-indicator">
+                <div class="progress-step completed">1</div>
+                <div class="progress-line completed"></div>
+                <div class="progress-step active">2</div>
+                <div class="progress-line"></div>
+                <div class="progress-step">3</div>
+                <div class="progress-line"></div>
+                <div class="progress-step">4</div>
+                <div class="progress-line"></div>
+                <div class="progress-step">5</div>
+            </div>
+
+            <div class="technique-visual" style="background: linear-gradient(135deg, #96ceb4 0%, #ffeaa7 100%);">
+                <h3 style="font-size: 2em; margin-bottom: 30px;">🎯 Tu Misión para Hoy</h3>
+                <p style="font-size: 1.3em; margin-bottom: 20px;"><strong>Practicar esta técnica de 90 segundos cada vez que detectes un bucle mental.</strong></p>
+                
+                <p style="font-size: 1.2em; margin-bottom: 20px;">Al final del día, vas a notar algo: tu mente se siente diferente. Más clara. Como si hubiera menos "ruido de fondo".</p>
+                
+                <p style="font-size: 1.3em; margin: 30px 0;"><span class="highlight">Esa es tu dopamina recalibrándose.</span></p>
+                
+                <p style="font-size: 1.2em;"><strong>Mañana, en el Audio 3, vas a aprender cómo hacer una limpieza profunda de toda la sobrecarga mental acumulada.</strong></p>
+                <p style="font-size: 1.1em; margin-top: 20px;">Pero eso es mañana.</p>
+                <p style="font-size: 1.3em; margin-top: 20px;"><strong>Hoy, tu única misión es practicar esta técnica cada vez que detectes un bucle.</strong></p>
+                <br>
+         <div class="final-message">
+ Tu MENTE es poderosa y TÚ tienes el CONTROL
+</div>
+
+
+        </div>
+    </div>
+
+    <script>
+        let speech = null;
+        let isPaused = false;
+        let currentUtterance = null;
+        let textChunks = [];
+        let currentChunkIndex = 0;
+
+        // Función para dividir el texto en chunks más pequeños
+        function splitTextIntoChunks(text) {
+            const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+            const chunks = [];
+            let currentChunk = '';
+            
+            sentences.forEach(sentence => {
+                if ((currentChunk + sentence).length < 500) {
+                    currentChunk += sentence;
+                } else {
+                    if (currentChunk) chunks.push(currentChunk);
+                    currentChunk = sentence;
+                }
+            });
+            
+            if (currentChunk) chunks.push(currentChunk);
+            return chunks;
+        }
+
+        function getTextContent() {
+            const fullText = `
+                Bienvenido al día 2. Ayer identificaste tu patrón específico de sobrepensamiento. Hoy vas a aprender a cortarlo.
+                Y sí, dije cortarlo. No gestionarlo, no reducirlo gradualmente. Cortarlo.
+                La técnica que vas a aprender funciona porque actúa directamente sobre el circuito neurológico que mantiene tus pensamientos dando vueltas. Se llama Interrupción de Bucle Dopamínico y toma exactamente 90 segundos.
+
+                Lo que vas a escuchar puede sonar demasiado simple. Esa es precisamente la razón por la que funciona.
+                Primero, necesitas entender qué pasa en tu cerebro cuando no puedes parar un pensamiento.
+                Tu mente no está pensando demasiado. Está atrapada en lo que los neurocientíficos llamamos un bucle de retroalimentación dopamínica.
+                Es como un disco rayado. El pensamiento activa dopamina, la dopamina refuerza el pensamiento, el pensamiento se repite, más dopamina, más repetición. Una y otra vez.
+
+                Las técnicas tradicionales fallan porque intentan pensar diferente o relajarse. Pero no puedes usar el mismo sistema que está atascado para desatascarse.
+                Necesitas una interrupción neurológica. Un reset del circuito.
+
+                La técnica tiene 3 pasos exactos. Los voy a explicar primero, después hacemos una práctica guiada juntos.
+
+                PASO 1: DETECCIÓN - 10 segundos. Cuando notes que tu mente está en bucle, di mentalmente: Bucle detectado. Solo eso. No otra vez estoy pensando demasiado o tengo que parar esto. Solo: Bucle detectado.
+
+                PASO 2: CORTE FÍSICO - 20 segundos. Inmediatamente haces una acción física específica. No cualquier cosa. Tienes tres opciones:
+                Primera opción: Cuenta hacia atrás desde 20 tocando cada dedo de una mano. Empiezas con el pulgar, 20, después índice, 19, medio, 18, y así sucesivamente.
+                Segunda opción: Respira 4 veces profundas mientras presionas tus palmas juntas. Pon las palmas frente a tu pecho, presiona ligeramente, e inhala por 4 segundos, mantén 2, exhala por 6. Cuatro veces completas.
+                Tercera opción: Camina exactamente 10 pasos contando cada uno en voz alta. Si no puedes caminar, mueve los pies bajo la mesa o haz movimientos alternados con brazos y piernas.
+
+                PASO 3: REDIRECCIÓN - 60 segundos. Aquí viene la parte crucial. Tu cerebro va a querer volver al pensamiento original. Es completamente normal. En lugar de resistirte, le das una tarea específica a tu sistema sensorial:
+                Nombra 5 objetos que puedas ver ahora mismo. Míralos realmente, no solo los menciones mentalmente. 
+                Después 4 sonidos que escuches. Puede ser el aire acondicionado, voces lejanas, el tráfico. 
+                Después 3 texturas que puedas tocar. Tu ropa, la mesa, el respaldo de la silla. 
+                Después 2 olores que detectes. Tu perfume, comida, el aire. 
+                Después 1 sabor en tu boca. Lo que sea que puedas percibir.
+
+                Esto no es meditación. Es neurociencia aplicada. Estás forzando a tu cerebro a procesar información sensorial nueva, lo que rompe el bucle dopamínico automáticamente.
+
+                Ahora vamos a practicarlo juntos. Quiero que pienses en algo que normalmente te genera sobrepensamiento. No algo traumático, solo algo que te da vueltas. Una decisión pendiente, una preocupación, lo que sea.
+
+                ¿Ya lo tienes? Perfecto. Nota cómo tu mente quiere empezar a darle vueltas. Ahí está el bucle formándose.
+                Ahora, PASO 1: Di mentalmente Bucle detectado. Hazlo ahora.
+
+                PASO 2: Vamos a hacer la respiración con palmas. Pon tus palmas juntas frente a tu pecho, presiona ligeramente.
+                Inhala profundo por 4 segundos... mantén 2... exhala lento por 6...
+                Una más: inhala profundo por 4... mantén 2... exhala por 6...
+                Perfecto. Continúa así dos veces más por tu cuenta.
+
+                PASO 3: Ahora la redirección sensorial.
+                Nombra 5 cosas que puedas ver ahora mismo. Míralas realmente...
+                Ahora 4 sonidos que escuches en este momento...
+                Ahora continúa tú: 3 texturas que puedas tocar, 2 olores, y 1 sabor en tu boca.
+
+                Perfecto. ¿Notas algo? El pensamiento original ya no está dando vueltas en tu mente. Puede que todavía esté ahí, pero ya no tiene esa energía repetitiva e incontrolable.
+                Eso es neuroplasticidad en acción.
+
+                Esta técnica funciona mejor mientras más la uses. Tu cerebro necesita crear nuevos circuitos neurológicos, y eso requiere repetición.
+                Durante las próximas 24 horas, quiero que uses esta técnica cada vez que detectes un bucle mental. No importa dónde estés. En una reunión, hablando con alguien, en el baño, donde sea.
+                La detección puedes hacerla mentalmente. El corte físico puede ser discreto - la respiración con palmas nadie la va a notar. Y la redirección la haces con lo que tengas alrededor.
+
+                Algo importante: los primeros bucles que cortes van a intentar volver. Es normal. Tu cerebro está acostumbrado a esos patrones. Solo repite la técnica. Después de 3-4 interrupciones, el bucle se desactiva completamente.
+                
+                Dependiendo del patrón que identificaste ayer, hay pequeñas adaptaciones:
+                Si tu patrón es Sobrecarga de Input: Usa esta técnica especialmente después de consumir noticias, redes sociales, o cualquier información intensa.
+                Si tu patrón es Bucle de Indecisión: Aplícala cada vez que te encuentres analizando las mismas opciones por tercera vez.
+                Si tu patrón es Hiperactivación Social: Úsala después de interacciones sociales intensas o cuando te quedes solo después de estar con gente.
+
+                Mañana, en el Audio 3, vas a aprender cómo hacer una limpieza profunda de toda la sobrecarga mental acumulada. Pero eso es mañana.
+                Hoy, tu única misión es practicar esta técnica de 90 segundos cada vez que detectes un bucle mental.
+                Al final del día, vas a notar algo: tu mente se siente diferente. Más clara. Como si hubiera menos ruido de fondo.
+                Esa es tu dopamina recalibrándose.
+            `;
+            
+            return fullText.trim();
+        }
+
+        function speakNextChunk() {
+            if (currentChunkIndex >= textChunks.length) {
+                document.getElementById('playButton').style.display = 'inline-block';
+                document.getElementById('pauseButton').style.display = 'none';
+                document.getElementById('playButton').innerHTML = '🎧 Escuchar Audio';
+                currentChunkIndex = 0;
+                return;
+            }
+            
+            currentUtterance = new SpeechSynthesisUtterance(textChunks[currentChunkIndex]);
+            currentUtterance.lang = 'es-ES';
+            currentUtterance.rate = 0.9;
+            currentUtterance.pitch = 1;
+            currentUtterance.volume = 1;
+            
+            currentUtterance.onend = function() {
+                currentChunkIndex++;
+                if (!isPaused) {
+                    speakNextChunk();
+                }
+            };
+            
+            window.speechSynthesis.speak(currentUtterance);
+        }
+
+        document.getElementById('playButton').addEventListener('click', function() {
+            if ('speechSynthesis' in window) {
+                if (isPaused) {
+                    window.speechSynthesis.resume();
+                    isPaused = false;
+                    document.getElementById('playButton').style.display = 'none';
+                    document.getElementById('pauseButton').style.display = 'inline-block';
+                } else {
+                    window.speechSynthesis.cancel();
+                    textChunks = splitTextIntoChunks(getTextContent());
+                    currentChunkIndex = 0;
+                    
+                    document.getElementById('playButton').style.display = 'none';
+                    document.getElementById('pauseButton').style.display = 'inline-block';
+                    
+                    speakNextChunk();
+                }
+            } else {
+                alert('Tu navegador no soporta la función de audio. Puedes leer el contenido normalmente.');
+            }
+        });
+
+        document.getElementById('pauseButton').addEventListener('click', function() {
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.pause();
+                isPaused = true;
+                document.getElementById('playButton').style.display = 'inline-block';
+                document.getElementById('pauseButton').style.display = 'none';
+                document.getElementById('playButton').innerHTML = '▶️ Continuar';
+            }
+        });
+
+        function startStep1() {
+            document.getElementById('step1Instructions').classList.add('active');
+        }
+
+        function startStep2() {
+            document.getElementById('step1Instructions').classList.remove('active');
+            document.getElementById('step2Instructions').classList.add('active');
+        }
+
+        function startStep3() {
+            document.getElementById('step2Instructions').classList.remove('active');
+            document.getElementById('step3Instructions').classList.add('active');
+        }
+
+        function completePractice() {
+            document.getElementById('step3Instructions').classList.remove('active');
+            document.getElementById('successMessage').classList.add('show');
+        }
+    </script>
+<script>
+  // Stepper 90s: revela el siguiente paso al pulsar "next"
+  (function () {
+    const container = document.getElementById('pasos-90s');
+    if (!container) return;
+
+    // Asegura que sólo el primer paso esté visible si no lo está
+    const allSteps = [...container.querySelectorAll('.paso')];
+    if (!allSteps.some(s => s.classList.contains('visible')) && allSteps[0]) {
+      allSteps[0].classList.add('visible');
+    }
+
+    container.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('.next-btn');
+      if (!btn) return;
+
+      const nextId = btn.getAttribute('data-next'); // ej: "paso2" / "paso3" / "fin"
+      const current = btn.closest('.paso');
+      const next = nextId ? container.querySelector('#' + nextId) : null;
+
+      // Oculta el actual
+      if (current) current.classList.remove('visible');
+
+      // Muestra el siguiente (o mensaje final)
+      if (next) {
+        next.classList.add('visible');
+        // Scroll suave al inicio del siguiente paso
+        next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  })();
+</script>
+
+
+</body>
+</html>
